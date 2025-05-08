@@ -1,6 +1,6 @@
 from typing import List
 
-from markdown_question_bank.question import Question
+from markdown_question_bank.question import Question, MultilanguageString
 
 
 class QuestionValidator:
@@ -9,9 +9,9 @@ class QuestionValidator:
 
     def validate(self, question: Question) -> None:
         for lang in question.getLanguages():
-            if not question.getRightAnswers(lang):
+            if not any(answer.getTranslation(lang) for answer in question.getRightAnswers()):
                 raise ValueError(f"A pregunta non ten respostas correctas en {lang}.")
-            if len(question.getWrongAnswers(lang)) < self.min_wrong:
+            if len([answer for answer in question.getWrongAnswers() if answer.getTranslation(lang)]) < self.min_wrong:
                 raise ValueError(
                     f"A pregunta ten menos de {self.min_wrong} respostas incorrectas en {lang}."
                 )

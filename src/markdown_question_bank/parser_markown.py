@@ -1,6 +1,6 @@
 import os
 from typing import List
-from markdown_question_bank.question import Question
+from markdown_question_bank.question import Question, MultilanguageString
 
 class MarkdownFolderParser:
     def parse(self, folder: str, topics: List[str] = []) -> List[Question]:
@@ -47,18 +47,25 @@ class MarkdownFolderParser:
             wrongs = {lang: questions_by_lang[lang][i][2] for lang in questions_by_lang}
             if len(set(len(wrongs[lang]) for lang in wrongs)) != 1:
                 raise ValueError(f"Na pregunta {statements} non hai o mesmo número de respostas incorrectas en todos os idiomas.")
-            
-            questions.append(Question(statements, corrects, wrongs, topics))
+
+            statement_ml = MultilanguageString(statements)
+            correct_answers_ml = [MultilanguageString({lang: corrects[lang][j] for lang in corrects}) for j in range(len(next(iter(corrects.values()))))]
+            wrong_answers_ml = [MultilanguageString({lang: wrongs[lang][j] for lang in wrongs}) for j in range(len(next(iter(wrongs.values()))))]
+
+            questions.append(Question(statement_ml, correct_answers_ml, wrong_answers_ml, topics))
 
         return questions
 
 
 if __name__ == "__main__":
-    # Exemplo de uso
     parser = MarkdownFolderParser()
     questions = parser.parse("test_data/all", topics=["topic1", "topic2"])
     for question in questions:
-        print(question.getStatement("GL"))  # Cambia "EN" polo idioma que queiras
-        print(question.getRightAnswers("GL"))
-        print(question.getWrongAnswers("GL"))
+        print('*' * 20)
+        print(question.getStatement().getTranslation("GL"))
+        print(len(question.getRightAnswers()))
+        print(len(question.getWrongAnswers()))
+        print(question.getRightAnswers()[0].getTranslation("GL"))
+        for q in question.getWrongAnswers():
+            print(q.getTranslation("GL"))
         print(question.getTopics())

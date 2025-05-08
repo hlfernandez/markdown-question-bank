@@ -1,18 +1,24 @@
 from markdown_question_bank.bank import Bank
-from markdown_question_bank.question import Question
+from markdown_question_bank.question import Question, MultilanguageString
 
 def test_bank_valid_questions():
     questions = [
         Question(
-            statements={"GL": "Pregunta 1"},
-            correct_answers={"GL": ["A"]},
-            wrong_answers={"GL": ["B", "C"]},
+            statement=MultilanguageString({"GL": "Pregunta 1"}),
+            correct_answers=[MultilanguageString({"GL": "A"})],
+            wrong_answers=[
+                MultilanguageString({"GL": "B"}),
+                MultilanguageString({"GL": "C"})
+            ],
             topics=["tema1"]
         ),
         Question(
-            statements={"GL": "Pregunta 2"},
-            correct_answers={"GL": ["Verdadeiro"]},
-            wrong_answers={"GL": ["Falso", "Non sei"]},
+            statement=MultilanguageString({"GL": "Pregunta 2"}),
+            correct_answers=[MultilanguageString({"GL": "Verdadeiro"})],
+            wrong_answers=[
+                MultilanguageString({"GL": "Falso"}),
+                MultilanguageString({"GL": "Non sei"})
+            ],
             topics=["tema2"]
         )
     ]
@@ -21,5 +27,5 @@ def test_bank_valid_questions():
 
     assert len(bank.getQuestions()) == 2
     assert set(bank.getTopics()) == {"tema1", "tema2"}
-    assert bank.getQuestionsByTopic("tema1")[0].getStatement("GL") == "Pregunta 1"
+    assert bank.getQuestionsByTopic("tema1")[0].getStatement().getTranslation("GL") == "Pregunta 1"
     assert "GL" in bank.getQuestions()[0].getLanguages()

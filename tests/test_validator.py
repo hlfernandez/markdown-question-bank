@@ -1,19 +1,19 @@
 import pytest
 from markdown_question_bank.validator import QuestionValidator
-from markdown_question_bank.question import Question
+from markdown_question_bank.question import Question, MultilanguageString
 
 def test_validate_all_detects_invalid_question():
     q1 = Question(
-        statements={"GL": "Pregunta válida"},
-        correct_answers={"GL": ["A"]},
-        wrong_answers={"GL": ["B", "C"]},
+        statement=MultilanguageString({"GL": "Pregunta válida"}),
+        correct_answers=[MultilanguageString({"GL": "A"})],
+        wrong_answers=[MultilanguageString({"GL": "B"}), MultilanguageString({"GL": "C"})],
         topics=[]
     )
 
     q2 = Question(
-        statements={"GL": "Pregunta inválida"},
-        correct_answers={"GL": ["A"]},
-        wrong_answers={"GL": ["B"]},
+        statement=MultilanguageString({"GL": "Pregunta inválida"}),
+        correct_answers=[MultilanguageString({"GL": "A"})],
+        wrong_answers=[MultilanguageString({"GL": "B"})],
         topics=[]
     )
 
@@ -24,16 +24,16 @@ def test_validate_all_detects_invalid_question():
 
 def test_validate_all_valid_questions():
     q1 = Question(
-        statements={"GL": "Pregunta 1"},
-        correct_answers={"GL": ["A"]},
-        wrong_answers={"GL": ["B", "C"]},
+        statement=MultilanguageString({"GL": "Pregunta 1"}),
+        correct_answers=[MultilanguageString({"GL": "A"})],
+        wrong_answers=[MultilanguageString({"GL": "B"}), MultilanguageString({"GL": "C"})],
         topics=[]
     )
 
     q2 = Question(
-        statements={"GL": "Pregunta 2"},
-        correct_answers={"GL": ["Si"]},
-        wrong_answers={"GL": ["Non", "Quizais"]},
+        statement=MultilanguageString({"GL": "Pregunta 2"}),
+        correct_answers=[MultilanguageString({"GL": "Si"})],
+        wrong_answers=[MultilanguageString({"GL": "Non"}), MultilanguageString({"GL": "Quizais"})],
         topics=[]
     )
 

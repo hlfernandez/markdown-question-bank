@@ -15,4 +15,4 @@ def test_parse_bank_with_topics():
 
     for q in questions:
         assert q.getTopics(), "Cada pregunta debe ter polo menos un tema"
-        assert bank.min_wrong <= len(q.getWrongAnswers("GL"))
+        assert bank.min_wrong <= len(q.getWrongAnswers())
