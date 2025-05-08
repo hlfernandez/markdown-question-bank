@@ -1,0 +1,9 @@
+{
+    "python.envFile": "${workspaceFolder}/.env",
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": ["tests"],
+    "python.analysis.extraPaths": ["src"],
+    "pylint.args": ["--disable=C0116", "--disable=C0114", "--max-line-length=120"],
+    "mypy-type-checker.args": ["--ignore-missing-imports"]
+}
+  

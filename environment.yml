@@ -1,0 +1,6 @@
+name: markdown-question-bank
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pytest
