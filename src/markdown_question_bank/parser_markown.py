@@ -38,7 +38,7 @@ class MarkdownFolderParser:
             if len(questions) != question_count:
                 raise ValueError(f"O número de preguntas en {lang} non coincide co resto.")
 
-        questions: List[Question] = []
+        toret: List[Question] = []
         for i in range(question_count):
             statements = {lang: questions_by_lang[lang][i][0] for lang in questions_by_lang}
             corrects = {lang: questions_by_lang[lang][i][1] for lang in questions_by_lang}
@@ -52,20 +52,20 @@ class MarkdownFolderParser:
             correct_answers_ml = [MultilanguageString({lang: corrects[lang][j] for lang in corrects}) for j in range(len(next(iter(corrects.values()))))]
             wrong_answers_ml = [MultilanguageString({lang: wrongs[lang][j] for lang in wrongs}) for j in range(len(next(iter(wrongs.values()))))]
 
-            questions.append(Question(statement_ml, correct_answers_ml, wrong_answers_ml, topics))
+            toret.append(Question(statement_ml, correct_answers_ml, wrong_answers_ml, topics))
 
-        return questions
+        return toret
 
 
 if __name__ == "__main__":
     parser = MarkdownFolderParser()
-    questions = parser.parse("test_data/all", topics=["topic1", "topic2"])
-    for question in questions:
+    test_questions = parser.parse("test_data/all", topics=["topic1", "topic2"])
+    for question in test_questions:
         print('*' * 20)
-        print(question.getStatement().getTranslation("GL"))
-        print(len(question.getRightAnswers()))
-        print(len(question.getWrongAnswers()))
-        print(question.getRightAnswers()[0].getTranslation("GL"))
-        for q in question.getWrongAnswers():
-            print(q.getTranslation("GL"))
-        print(question.getTopics())
+        print(question.get_statement().get_translation("GL"))
+        print(len(question.get_right_answers()))
+        print(len(question.get_wrong_answers()))
+        print(question.get_right_answers()[0].get_translation("GL"))
+        for q in question.get_wrong_answers():
+            print(q.get_translation("GL"))
+        print(question.get_topics())

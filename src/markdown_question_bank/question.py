@@ -4,10 +4,10 @@ class MultilanguageString:
     def __init__(self, translations: Dict[str, str]):
         self.translations = translations
 
-    def getLanguages(self) -> List[str]:
+    def get_languages(self) -> List[str]:
         return list(self.translations.keys())
 
-    def getTranslation(self, language: str) -> str:
+    def get_translation(self, language: str) -> str:
         return self.translations[language]
 
 class Question:
@@ -23,17 +23,17 @@ class Question:
         self.wrong_answers = wrong_answers
         self.topics = topics
 
-    def getLanguages(self) -> List[str]:
-        return self.statement.getLanguages()
+    def get_languages(self) -> List[str]:
+        return self.statement.get_languages()
 
-    def getStatement(self) -> MultilanguageString:
+    def get_statement(self) -> MultilanguageString:
         return self.statement
 
-    def getTopics(self) -> List[str]:
+    def get_topics(self) -> List[str]:
         return self.topics
 
-    def getRightAnswers(self) -> List[MultilanguageString]:
+    def get_right_answers(self) -> List[MultilanguageString]:
         return self.correct_answers
 
-    def getWrongAnswers(self) -> List[MultilanguageString]:
+    def get_wrong_answers(self) -> List[MultilanguageString]:
         return self.wrong_answers

@@ -31,8 +31,8 @@ if __name__ == "__main__":
     parser = BankFolderParser(min_wrong=2)
     bank = parser.parse(folder_path)
 
-    questions = bank.getQuestions()
+    questions = bank.get_questions()
     print(len(questions))
     
-    topics = bank.getTopics()
+    topics = bank.get_topics()
     print(topics)

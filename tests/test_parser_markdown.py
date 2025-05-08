@@ -10,10 +10,10 @@ def test_parse_all_folder():
 
     assert len(questions) == 2, "There must be 2 questions in the folder"
     for q in questions:
-        assert "GL" in q.getLanguages()
-        assert "ES" in q.getLanguages()
-        assert len(q.getLanguages()) == 2, "There must be 2 language files in the folder"
-        assert len(q.getRightAnswers()) == 1
-        assert len(q.getWrongAnswers()) == 2
-        assert len(q.getRightAnswers()) == 1
-        assert len(q.getWrongAnswers()) == 2
+        assert "GL" in q.get_languages()
+        assert "ES" in q.get_languages()
+        assert len(q.get_languages()) == 2, "There must be 2 language files in the folder"
+        assert len(q.get_right_answers()) == 1
+        assert len(q.get_wrong_answers()) == 2
+        assert len(q.get_right_answers()) == 1
+        assert len(q.get_wrong_answers()) == 2

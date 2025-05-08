@@ -8,10 +8,10 @@ class QuestionValidator:
         self.min_wrong = min_wrong
 
     def validate(self, question: Question) -> None:
-        for lang in question.getLanguages():
-            if not any(answer.getTranslation(lang) for answer in question.getRightAnswers()):
+        for lang in question.get_languages():
+            if not any(answer.get_translation(lang) for answer in question.get_right_answers()):
                 raise ValueError(f"A pregunta non ten respostas correctas en {lang}.")
-            if len([answer for answer in question.getWrongAnswers() if answer.getTranslation(lang)]) < self.min_wrong:
+            if len([answer for answer in question.get_wrong_answers() if answer.get_translation(lang)]) < self.min_wrong:
                 raise ValueError(
                     f"A pregunta ten menos de {self.min_wrong} respostas incorrectas en {lang}."
                 )

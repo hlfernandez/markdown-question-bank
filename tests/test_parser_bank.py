@@ -6,13 +6,13 @@ def test_parse_bank_with_topics():
     parser = BankFolderParser(min_wrong=2)
     bank = parser.parse(folder_path)
 
-    questions = bank.getQuestions()
+    questions = bank.get_questions()
     assert len(questions) >= 1, "Debe haber polo menos unha pregunta no banco"
     
-    topics = bank.getTopics()
+    topics = bank.get_topics()
     assert "topic1" in topics
-    assert "topic2" in topics or len(topics) == 1  # Por se topic2 aínda non ten preguntas
+    assert "topic2" in topics
 
     for q in questions:
-        assert q.getTopics(), "Cada pregunta debe ter polo menos un tema"
-        assert bank.min_wrong <= len(q.getWrongAnswers())
+        assert q.get_topics(), "Cada pregunta debe ter polo menos un tema"
+        assert bank.min_wrong <= len(q.get_wrong_answers())
