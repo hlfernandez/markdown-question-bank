@@ -1,12 +1,10 @@
-# src/markdown_question_bank/generate_quiz_cli.py
-
 import os
 import click
 from markdown_question_bank.parser_bank import BankFolderParser
 from markdown_question_bank.sampler_question import CachedQuestionSampler, RandomQuestionSampler
 from markdown_question_bank.sampler_answers import DefaultAnswerStrategySelector, CachedAnswerSampler, DefaultAnswerSampler
 from markdown_question_bank.quiz_builder import QuizBuilder
-from markdown_question_bank.quiz_markdown import MarkdownQuizModel
+from markdown_question_bank.quiz_markdown_exporter import QuizExporter
 
 @click.command()
 @click.option('--folder-path', required=True, type=click.Path(exists=True), help='Ruta ao cartafol co banco de preguntas.')
@@ -43,14 +41,13 @@ def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alterna
     models = quiz.build_models()
     languages = [lang] if lang else bank.languages
 
-    for i, model in enumerate(models):
-        markdown_quiz = MarkdownQuizModel(model)
-        for language in languages:
-            base_filename = os.path.join(outdir, f"{i}_{language}.md")
-            markdown_quiz.to_file(base_filename, language, num_cols=num_cols, with_true_answers=False)
+    exporter = QuizExporter(outdir, num_cols)
+    generated_files = exporter.export_models(models, languages)
 
-            answer_filename = os.path.join(outdir, f"{i}_{language}_with_answers.md")
-            markdown_quiz.to_file(answer_filename, language, num_cols=num_cols, with_true_answers=True)
+    click.echo("Output files:")
+    for path in generated_files:
+        click.echo(f" - {path}")
+
 
 if __name__ == '__main__':
     generate_quizzes()

@@ -1,5 +1,14 @@
 # Markdown Question Bank
 
+## Conda environment
+
+```
+conda env create -f environment.yml
+conda activate markdown-question-bank
+```
+
+## Building quizes
+
 Show the command help with: `python generate_quiz.py --help`
 
 Generate two models with 6 questions each with the following command. Each model will have the same subsample of questions from the bank in the same order. The anwers will have a different order in each model (because of the `--shuffle-answers`). 
