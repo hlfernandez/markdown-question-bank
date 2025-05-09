@@ -1,4 +1,4 @@
-Cal destas opcións describe mellor o propósito da función `range(3)` en Python?s
+Cal destas opcións describe mellor o propósito da función `range(3)` en Python?
 
 - Crea unha lista cos números 1, 2 e 3.
 - [X] Crea un iterador que produce os números 0, 1 e 2.
