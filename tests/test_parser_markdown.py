@@ -8,7 +8,7 @@ def test_parse_all_folder():
 
     questions = parser.parse(folder_path)
 
-    assert len(questions) == 2, "There must be 2 questions in the folder"
+    assert len(questions) == 10, "There must be 10 questions in the folder"
     for q in questions:
         assert "GL" in q.get_languages()
         assert "ES" in q.get_languages()
