@@ -33,6 +33,9 @@ if __name__ == "__main__":
 
     questions = bank.get_questions()
     print(len(questions))
+
+    print(questions[0].statement.get_translation("ES"))
+    print(questions[0].get_right_answers()[0].get_translation("ES"))
     
     topics = bank.get_topics()
     print(topics)

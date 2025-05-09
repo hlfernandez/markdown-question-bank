@@ -20,16 +20,58 @@ class MarkdownFolderParser:
                 lines = block.strip().split('\n')
                 if not lines:
                     continue
-                statement = lines[0].strip()
+
+                # Extract the statement (can span multiple lines until the first answer starts)
+                statement_lines = []
+                answer_lines = []
+                is_answer_section = False
+
+                for line in lines:
+                    if line.strip().startswith('- '):
+                        is_answer_section = True
+                    if is_answer_section:
+                        answer_lines.append(line)
+                    else:
+                        statement_lines.append(line)
+
+                statement = '\n'.join(statement_lines).strip()
+
+                # Process answers (can span multiple lines)
                 correct: List[str] = []
                 wrong: List[str] = []
-                for line in lines[1:]:
-                    ans = line.strip()
-                    if ans.endswith('`[X]`'):
-                        ans_clean = ans[:-len('`[X]`')].strip()
-                        correct.append(ans_clean)
-                    elif ans:
-                        wrong.append(ans)
+                current_answer = []
+                is_correct = False
+
+                for line in answer_lines:
+                    if line.strip().startswith('- [X]'):
+                        if current_answer:
+                            answer_text = '\n'.join(current_answer).strip()
+                            if is_correct:
+                                correct.append(answer_text)
+                            else:
+                                wrong.append(answer_text)
+                        current_answer = [line.strip()[5:].strip()]  # Start a new answer, removing '- [X]'
+                        is_correct = True
+                    elif line.strip().startswith('- '):
+                        if current_answer:
+                            answer_text = '\n'.join(current_answer).strip()
+                            if is_correct:
+                                correct.append(answer_text)
+                            else:
+                                wrong.append(answer_text)
+                        current_answer = [line.strip()[2:].strip()]  # Start a new answer, removing '- '
+                        is_correct = False
+                    else:
+                        current_answer.append(line.strip())
+
+                # Add the last answer
+                if current_answer:
+                    answer_text = '\n'.join(current_answer).strip()
+                    if is_correct:
+                        correct.append(answer_text)
+                    else:
+                        wrong.append(answer_text)
+
                 parsed.append((statement, correct, wrong))
             questions_by_lang[lang] = parsed
 
@@ -67,5 +109,5 @@ if __name__ == "__main__":
         print(len(question.get_wrong_answers()))
         print(question.get_right_answers()[0].get_translation("GL"))
         for q in question.get_wrong_answers():
-            print(q.get_translation("GL"))
+            print('- ' + q.get_translation("GL"))
         print(question.get_topics())
