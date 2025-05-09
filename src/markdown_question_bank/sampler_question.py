@@ -10,37 +10,37 @@ class QuestionSampler(ABC):
         pass
 
 class RandomQuestionSampler(QuestionSampler):
-    def __init__(self, num_questions: int, shuffle: bool = False, seed: int | None = None):
+    def __init__(self, num_questions: int, seed: int | None = None):
         self.num_questions = num_questions
-        self.shuffle = shuffle
         self.seed = seed
 
     def sample(self, bank: Bank) -> List[Question]:
         if self.seed is not None:
             random.seed(self.seed)
+
         questions = random.sample(bank.get_questions(), self.num_questions)
-        if self.shuffle:
-            random.shuffle(questions)
+
         return questions
 
 class TopicQuestionSampler(QuestionSampler):
-    # TODO: TopicQuestionSampler add shuffle and seed
-    def __init__(self, topic_counts: dict[str, int], total: int):
+    def __init__(self, topic_counts: dict[str, int], total: int, seed: int | None = None):
         self.topic_counts = topic_counts
         self.total = total
+        self.seed = seed
 
     def sample(self, bank: Bank) -> List[Question]:
+        if self.seed is not None:
+            random.seed(self.seed)
+
         selected = []
         used_ids: set[int] = set()
 
-        # 1. Samplear os temas obrigatorios
         for topic, n in self.topic_counts.items():
             candidates = bank.get_questions_by_topic(topic)
             sample = random.sample(candidates, min(n, len(candidates)))
             selected.extend(sample)
             used_ids.update(id(q) for q in sample)
 
-        # 2. Rellenar co resto (de calquera tema)
         remaining = self.total - len(selected)
         if remaining > 0:
             all_questions = bank.get_questions()
@@ -50,7 +50,7 @@ class TopicQuestionSampler(QuestionSampler):
 
         return selected
 
-class StaticQuestionSampler(QuestionSampler):
+class CachedQuestionSampler(QuestionSampler):
     def __init__(self, inner_sampler: QuestionSampler):
         self.inner_sampler = inner_sampler
         self._cached: List[Question] | None = None

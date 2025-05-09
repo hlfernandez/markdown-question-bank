@@ -12,8 +12,10 @@ class QuizBuilder:
         num_models: int,
         question_sampler: QuestionSampler,
         answer_strategy_selector: AnswerStrategySelector,
-        num_alternatives: int = 4,
-        shuffle_answers: bool = True
+        num_alternatives: int,
+        shuffle_answers: bool = True,
+        shuffle_questions: bool = True,
+        seed: int | None = None
     ):
         self.bank = bank
         self.num_models = num_models
@@ -21,11 +23,18 @@ class QuizBuilder:
         self.answer_strategy_selector = answer_strategy_selector
         self.num_alternatives = num_alternatives
         self.shuffle_answers = shuffle_answers
+        self.shuffle_questions = shuffle_questions
+        self.seed = seed
+        if self.seed is not None:
+            random.seed(self.seed)
 
     def build_models(self) -> List[QuizModel]:
         models = []
         for _ in range(self.num_models):
             selected_questions = self.question_sampler.sample(self.bank)
+            if self.shuffle_questions:
+                random.shuffle(selected_questions)
+
             quiz_questions: List[QuizQuestion] = []
 
             for q in selected_questions:
@@ -53,32 +62,38 @@ class QuizBuilder:
 if __name__ == "__main__":
     import os 
     from markdown_question_bank.parser_bank import BankFolderParser
-    from markdown_question_bank.sampler_question import StaticQuestionSampler, RandomQuestionSampler
+    from markdown_question_bank.sampler_question import CachedQuestionSampler, RandomQuestionSampler
     from markdown_question_bank.sampler_answers import DefaultAnswerStrategySelector
     from markdown_question_bank.quiz_markdown import MarkdownQuizModel
+    from markdown_question_bank.sampler_answers import CachedAnswerSampler, DefaultAnswerSampler
     
     folder_path = os.path.join("test_data", "all")
     parser = BankFolderParser(min_wrong=2)
     test_bank = parser.parse(folder_path)
 
-
     # A partir do banco de preguntas construimos 2 modelos de cuestionario
     # con 6 preguntas cada un, seleccionando aleatoriamente as preguntas. Ao empregar
-    # StaticQuestionSampler, as preguntas seleccionadas son sempre as mesmas en cada
+    # CachedQuestionSampler, as preguntas seleccionadas son sempre as mesmas en cada
     # modelo. Se se quere que as preguntas sexan diferentes, empregar RandomQuestionSampler
-    # en vez de StaticQuestionSampler.
-    # Ademais, para cada pregunta seleccionada, seleccionamos aleatoriamente 4 respostas
-    # (1 correcta e 3 incorrectas) para cada pregunta. Ao crear cada modelo, pídese a selección
+    # en vez de CachedQuestionSampler.
+    # Ademais, para cada pregunta seleccionada, seleccionamos aleatoriamente 3 respostas
+    # (1 correcta e 2 incorrectas) para cada pregunta. Ao crear cada modelo, pídese a selección
     # de respostas, que tamén será sempre igual ao empregar CachedAnswerSampler(DefaultAnswerSampler()).
     # Deste xeito, teremos 2 modelos coas mesmas preguntas e respostas, coas preguntas na mesma 
     # orde pero  diferentes ordes nas alternativas de cada respostas.
 
+    answer_sampler = CachedAnswerSampler(DefaultAnswerSampler())
+    question_sampler = CachedQuestionSampler(RandomQuestionSampler(num_questions=6))
+
     quiz = QuizBuilder(
         bank=test_bank,
         num_models=2,
-        question_sampler=StaticQuestionSampler(RandomQuestionSampler(6, True, 2025)),
-        answer_strategy_selector=DefaultAnswerStrategySelector(),
-        num_alternatives=3
+        question_sampler=question_sampler,
+        answer_strategy_selector=DefaultAnswerStrategySelector(answer_sampler),
+        num_alternatives=3,
+        shuffle_answers=True,
+        shuffle_questions=False,
+        seed=2025
     )
 
     built_models = quiz.build_models()

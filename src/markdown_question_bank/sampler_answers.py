@@ -10,14 +10,19 @@ class AnswerSampler(ABC):
         pass
 
 class DefaultAnswerSampler(AnswerSampler):
+
+    def __init__(self, seed: int | None = None):
+        self.seed = seed
+
     def sample_question(self, question: Question, num_alternatives: int) -> QuizQuestion:
         correct = question.get_right_answers()
         wrong = question.get_wrong_answers()
 
-        # Eliximos unha resposta correcta ao azar
+        if self.seed is not None:
+            random.seed(self.seed)
+
         correct_choice = random.choice(correct)
 
-        # Seleccionamos (num_alternatives - 1) incorrectas
         num_wrong = num_alternatives - 1
         wrong_choices = random.sample(wrong, min(num_wrong, len(wrong)))
 
@@ -29,7 +34,7 @@ class DefaultAnswerSampler(AnswerSampler):
             statement=question.get_statement(),
             options=options,
             correct_indices=correct_indices,
-            shufflable=True  # As opcións por defecto son barallables
+            shufflable=True
         )
 
 class CachedAnswerSampler(AnswerSampler):
@@ -49,8 +54,13 @@ class AnswerStrategySelector(ABC):
         pass
 
 class DefaultAnswerStrategySelector(AnswerStrategySelector):
-    def __init__(self):
-        self.default_sampler = CachedAnswerSampler(DefaultAnswerSampler())
+    default_sampler: AnswerSampler
+
+    def __init__(self, default_sampler: AnswerSampler | None = None):
+        if default_sampler is None:
+            self.default_sampler = CachedAnswerSampler(DefaultAnswerSampler())
+        else:
+            self.default_sampler = default_sampler
 
     def select_sampler(self, question: Question) -> AnswerSampler:
         return self.default_sampler
