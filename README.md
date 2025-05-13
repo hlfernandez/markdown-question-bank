@@ -14,6 +14,7 @@ Show the command help with: `python generate_quiz.py --help`
 Generate two models with 6 questions each with the following command. Each model will have the same subsample of questions from the bank in the same order. The anwers will have a different order in each model (because of the `--shuffle-answers`). 
  
 ```sh
+export PYTHONPATH=src
 python generate_quiz.py \
   --folder-path test_data/all \
   --outdir test_output \
