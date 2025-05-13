@@ -55,6 +55,7 @@ class MarkdownQuizModel:
         # Construír preguntas
         for i, question in enumerate(self.quiz_model.get_questions(), 1):
             lines.append(f"**Pregunta {i}**. {question.statement.get_translation(language)}")
+            lines.append("")
             for idx, option in enumerate(question.options):
                 prefix = "- [X] " if with_true_answers and idx in question.correct_indices else "- "
                 lines.append(f"{prefix}{option.get_translation(language)}")
