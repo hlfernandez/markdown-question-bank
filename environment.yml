@@ -1,7 +1,11 @@
 name: markdown-question-bank
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - python=3.11
   - pytest
   - click
+  - pandoc=3.6.2  
+  - weasyprint
+  - make

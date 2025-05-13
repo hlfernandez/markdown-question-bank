@@ -47,3 +47,17 @@ python generate_quiz.py \
   --lang GL \
   --seed 1234
 ```
+
+## Building PDFs
+
+After building your quizzes in an output directory (e.g., `outdir`), you can create PDFs using `generate_pdf.sh` (via `pandoc`, which is included in the conda environment). You will need:
+
+- The input directory where all generated markdown files are located.
+- A heading file to include in all generated PDFs.
+- A CSS file to customize the output.
+
+```sh
+./generate_pdf.sh -d test_output -h test_files/head.md -c test_files/style.css
+```
+
+A PDF file for each markdown quiz will be placed alongside it.
