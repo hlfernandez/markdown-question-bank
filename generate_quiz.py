@@ -17,7 +17,8 @@ from markdown_question_bank.quiz_markdown_exporter import QuizExporter
 @click.option('--seed', default=2025, help='Semente aleatoria para reproducibilidade.')
 @click.option('--shuffle-answers', is_flag=True, default=False, help='Indica se as respostas deben ser baralladas.')
 @click.option('--shuffle-questions', is_flag=True, default=False, help='Indica se as preguntas deben ser baralladas.')
-def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alternatives, num_cols, lang, seed, shuffle_answers, shuffle_questions):
+@click.option('--group-by-topic', is_flag=True, default=False, help='Indica se as preguntas deben estar agrupadas por tema.')
+def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alternatives, num_cols, lang, seed, shuffle_answers, shuffle_questions, group_by_topic):
     os.makedirs(outdir, exist_ok=True)
 
     parser = BankFolderParser(min_wrong=num_alternatives - 1)
@@ -35,7 +36,8 @@ def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alterna
         num_alternatives=num_alternatives,
         seed=seed,
         shuffle_answers=shuffle_answers,
-        shuffle_questions=shuffle_questions
+        shuffle_questions=shuffle_questions,
+        group_by_topic=group_by_topic
     )
 
     models = quiz.build_models()

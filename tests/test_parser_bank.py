@@ -10,8 +10,8 @@ def test_parse_bank_with_topics():
     assert len(questions) >= 1, "Debe haber polo menos unha pregunta no banco"
     
     topics = bank.get_topics()
-    assert "topic1" in topics
-    assert "topic2" in topics
+    assert "strings" in topics
+    assert "lists" in topics
 
     for q in questions:
         assert q.get_topics(), "Cada pregunta debe ter polo menos un tema"

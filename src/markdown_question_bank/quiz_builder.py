@@ -1,5 +1,6 @@
 from typing import List
 import random
+from markdown_question_bank.question import Question
 from markdown_question_bank.quiz_model import QuizModel, QuizQuestion
 from markdown_question_bank.bank import Bank
 from markdown_question_bank.sampler_question import QuestionSampler
@@ -15,6 +16,7 @@ class QuizBuilder:
         num_alternatives: int,
         shuffle_answers: bool = True,
         shuffle_questions: bool = True,
+        group_by_topic: bool = False,
         seed: int | None = None
     ):
         self.bank = bank
@@ -24,6 +26,7 @@ class QuizBuilder:
         self.num_alternatives = num_alternatives
         self.shuffle_answers = shuffle_answers
         self.shuffle_questions = shuffle_questions
+        self.group_by_topic = group_by_topic
         self.seed = seed
         if self.seed is not None:
             random.seed(self.seed)
@@ -31,9 +34,11 @@ class QuizBuilder:
     def build_models(self) -> List[QuizModel]:
         models = []
         for _ in range(self.num_models):
-            selected_questions = self.question_sampler.sample(self.bank)
+            selected_questions: List[Question] = self.question_sampler.sample(self.bank)
             if self.shuffle_questions:
                 random.shuffle(selected_questions)
+            if self.group_by_topic:
+                selected_questions.sort(key=lambda q: q.topics)
 
             quiz_questions: List[QuizQuestion] = []
 
