@@ -9,3 +9,6 @@ dependencies:
   - pandoc=3.6.2  
   - weasyprint
   - make
+  - pip
+  - pip:
+      - jinja2-cli

@@ -1,0 +1,22 @@
+{% if filename.split('_')[1] == 'GL' %}
+
+Esta é a cabeceira!
+
+Crea a túa lóxica baseada na variable {{ filename }}. Por exemplo:
+
+- Idioma: {{ filename.split('_')[1] }}
+- Modelo: {{ filename.split('_')[0] }}
+
+{% else %}
+This is the heading!
+
+You can create your custom logic based on the filename var, whose value is {{ filename }}. For example:
+
+- Lang: {{ filename.split('_')[1] }}
+- Model number: {{ filename.split('_')[0] }}
+
+{% endif %}
+
+
+
+

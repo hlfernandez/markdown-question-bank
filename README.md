@@ -61,3 +61,9 @@ After building your quizzes in an output directory (e.g., `outdir`), you can cre
 ```
 
 A PDF file for each markdown quiz will be placed alongside it.
+
+If you want that your heading file be different in someway, we facilitate the use of Jinja2 in your heading files. By now, the `filename` variable will be available inside your Jinja2 heading template (check out `test_files/head.jinja2`).
+
+```sh
+./generate_pdf.sh -d test_output -h test_files/head.jinja2 -c test_files/style.css
+```
