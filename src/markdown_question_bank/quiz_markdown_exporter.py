@@ -10,8 +10,8 @@ class QuizExporter:
         self.num_cols = num_cols
 
     def export_models(self, models: List[QuizModel], languages: List[str]) -> List[str]:
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")  # Generate timestamp
-        timestamped_dir = os.path.join(self.outdir, timestamp)  # Create timestamped directory
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamped_dir = os.path.join(self.outdir, timestamp)
         os.makedirs(timestamped_dir, exist_ok=True)
         generated_files = []
 

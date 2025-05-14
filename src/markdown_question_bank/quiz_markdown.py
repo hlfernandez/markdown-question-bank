@@ -24,22 +24,24 @@ class MarkdownQuizModel:
 
             # Header and separator
             header = ["   "] + [f"P{start + i + 1}" for i in range(len(block_questions))]
-            separator = ["---" for _ in header]
+            col_width = max(len(h) for h in header)  # Determine column width
+            header = [h.ljust(col_width) for h in header]
+            separator = ["-" * col_width for _ in header]
             lines.append("| " + " | ".join(header) + " |")
             lines.append("| " + " | ".join(separator) + " |")
 
             num_options = max(len(q.options) for q in block_questions)
             for row in range(num_options):
-                label = f"{chr(65 + row)}"  # A, B, C, ...
+                label = f"{chr(65 + row)}".ljust(col_width)  # A, B, C, ...
                 line = [label]
                 for q in block_questions:
                     if row < len(q.options):
                         if with_true_answers and row in q.correct_indices:
-                            line.append("X")
+                            line.append("X".ljust(col_width))
                         else:
-                            line.append(" ")
+                            line.append(" ".ljust(col_width))
                     else:
-                        line.append(" ")
+                        line.append(" ".ljust(col_width))
                 lines.append("| " + " | ".join(line) + " |")
 
             lines.append("")
