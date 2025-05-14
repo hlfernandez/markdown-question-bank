@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Clean Output",
+            "type": "shell",
+            "command": "rm -r test_output/*"
+        },
+        {
+            "label": "Generate Quiz 1",
+            "type": "shell",
+            "command": "export PYTHONPATH=src && python generate_quiz.py --folder-path test_data/all --outdir test_output --num-models 2 --num-questions 6 --num-alternatives 3 --shuffle-answers --num-cols 3 --lang GL --seed 1234",
+            "dependsOn": "Clean Output"
+        },    
+        {
+            "label": "Generate Quiz 2 (with topics)",
+            "type": "shell",
+            "command": "export PYTHONPATH=src && python generate_quiz.py --folder-path test_data/bank --outdir test_output --num-models 2 --num-questions 6 --num-alternatives 3 --shuffle-answers --group-by-topic --num-cols 3 --lang GL --seed 1234",
+            "dependsOn": "Clean Output"
+        },    
+        {
+            "label": "Generate PDF 1 (fixed header)",
+            "type": "shell",
+            "command": "./generate_pdf.sh -d test_output -h test_files/head.md -c test_files/style.css",
+            "dependsOn": "Generate Quiz 1"
+        },
+        {
+            "label": "Generate PDF 2 (template header)",
+            "type": "shell",
+            "command": "./generate_pdf.sh -d test_output -h test_files/head.jinja2 -c test_files/style.css",
+            "dependsOn": "Generate Quiz 1"
+        }        
+    ]
+}
