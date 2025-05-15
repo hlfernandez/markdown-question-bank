@@ -18,11 +18,15 @@ from markdown_question_bank.quiz_markdown_exporter import QuizExporter
 @click.option('--shuffle-answers', is_flag=True, default=False, help='Indica se as respostas deben ser baralladas.')
 @click.option('--shuffle-questions', is_flag=True, default=False, help='Indica se as preguntas deben ser baralladas.')
 @click.option('--group-by-topic', is_flag=True, default=False, help='Indica se as preguntas deben estar agrupadas por tema.')
-def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alternatives, num_cols, lang, seed, shuffle_answers, shuffle_questions, group_by_topic):
+@click.option('--exclude-topic', multiple=True, help='Tema(s) a excluír do banco de preguntas. Pode especificarse varias veces.')
+def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alternatives, num_cols, lang, seed, shuffle_answers, shuffle_questions, group_by_topic, exclude_topic):
     os.makedirs(outdir, exist_ok=True)
 
     parser = BankFolderParser(min_wrong=num_alternatives - 1)
     bank = parser.parse(folder_path)
+
+    if exclude_topic:
+        bank = bank.filter_topics(list(exclude_topic))
 
     question_sampler = CachedQuestionSampler(RandomQuestionSampler(num_questions))
     answer_sampler = CachedAnswerSampler(DefaultAnswerSampler())

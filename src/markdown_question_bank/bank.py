@@ -20,6 +20,7 @@ class Bank:
         for q in self.questions[1:]:
             if set(q.get_languages()) != base:
                 raise ValueError("As preguntas non teñen os mesmos idiomas.")
+
         return list(base)
 
     def get_questions(self) -> List[Question]:
@@ -29,7 +30,16 @@ class Bank:
         topics = set()
         for q in self.questions:
             topics.update(q.get_topics())
+
         return list(topics)
 
     def get_questions_by_topic(self, topic: str) -> List[Question]:
         return [q for q in self.questions if topic in q.get_topics()]
+
+    def filter_topics(self, excluded_topics: List[str]) -> 'Bank':
+        filtered_questions = [
+            q for q in self.questions
+            if not any(topic in excluded_topics for topic in q.get_topics())
+        ]
+
+        return Bank(filtered_questions, self.min_wrong)
