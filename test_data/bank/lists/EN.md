@@ -43,3 +43,35 @@ What is the result of `sum([1, 2, 3])`?
 - [X] 6
 - 123
 - Error because a list cannot be summed.
+
+---
+
+What does `lista = [1, 2, 3]; lista.pop()` return?
+
+- [X] 3
+- 1
+- 2
+
+---
+
+What does `lista = [1, 2, 3]; lista.insert(1, 10)` do?
+
+- Inserts 10 at the end of the list.
+- [X] Inserts 10 at position 1.
+- Removes the element at position 1.
+
+---
+
+What is the result of `lista = [1, 2, 3]; lista.clear()`?
+
+- [X] Leaves the list empty.
+- Removes only the first element.
+- Returns a new list with the same elements.
+
+---
+
+What does `lista = [1, 2, 3]; 2 in lista` do?
+
+- [X] Returns True.
+- Returns False.
+- Raises an error.

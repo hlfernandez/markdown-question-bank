@@ -43,3 +43,35 @@
 - [X] 6
 - 123
 - Error porque no se puede sumar una lista.
+
+---
+
+¿Qué devuelve `lista = [1, 2, 3]; lista.pop()`?
+
+- [X] 3
+- 1
+- 2
+
+---
+
+¿Qué hace `lista = [1, 2, 3]; lista.insert(1, 10)`?
+
+- Inserta 10 al final de la lista.
+- [X] Inserta 10 en la posición 1.
+- Elimina el elemento en la posición 1.
+
+---
+
+¿Qué resultado tiene `lista = [1, 2, 3]; lista.clear()`?
+
+- [X] Deja la lista vacía.
+- Elimina solo el primer elemento.
+- Devuelve una nueva lista con los mismos elementos.
+
+---
+
+¿Qué hace `lista = [1, 2, 3]; 2 in lista`?
+
+- [X] Devuelve True.
+- Devuelve False.
+- Lanza un error.
