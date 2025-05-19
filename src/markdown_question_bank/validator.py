@@ -13,7 +13,7 @@ class QuestionValidator:
                 raise ValueError(f"A pregunta non ten respostas correctas en {lang}.")
             if len([answer for answer in question.get_wrong_answers() if answer.get_translation(lang)]) < self.min_wrong:
                 raise ValueError(
-                    f"A pregunta ten menos de {self.min_wrong} respostas incorrectas en {lang}."
+                    f"A pregunta ten menos de {self.min_wrong} respostas incorrectas en {lang}. Enunciado: {question.get_statement().get_translation(lang)}"
                 )
 
     def validate_all(self, questions: List[Question]) -> None:
