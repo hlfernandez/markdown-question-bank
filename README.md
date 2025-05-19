@@ -9,11 +9,14 @@ conda activate markdown-question-bank
 
 ## Building quizes
 
-Show the command help with: `python generate_quiz.py --help`
+Show the command help with: `python generate_quiz.py --help`.
+
+Interesting flags are:
+- `--equal-questions-per-topic`: Distributes the total number of questions as evenly as possible across all topics. The total number of questions is divided by the number of topics to determine how many to select from each. If a topic does not have enough available questions, the remaining questions are taken from other topics with more questions.
 
 ### Example 1 (without topics)
 
-Generate two models with 6 questions each with the following command. Each model will have the same subsample of questions from the bank in the same order. The anwers will have a different order in each model (because of `--shuffle-answers`). 
+Generate two models with 6 questions each with the following command. Each model will have the same subsample of questions from the bank in the same order. The anwers will have a different order in each model (because of `--shuffle-answers`).
  
 ```sh
 export PYTHONPATH=src

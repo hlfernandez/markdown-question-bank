@@ -50,6 +50,21 @@ class TopicQuestionSampler(QuestionSampler):
 
         return selected
 
+    @staticmethod
+    def from_bank(bank: Bank, total: int, seed: int | None = None) -> 'TopicQuestionSampler':
+        topics = bank.get_topics()
+        if not topics:
+            raise ValueError("No topics found in the bank.")
+
+        n_topics = len(topics)
+        per_topic = total // n_topics
+        remainder = total % n_topics
+        topic_counts = {topic: per_topic for topic in topics}
+        for topic in list(topics)[:remainder]:
+            topic_counts[topic] += 1
+
+        return TopicQuestionSampler(topic_counts, total, seed)
+
 class CachedQuestionSampler(QuestionSampler):
     def __init__(self, inner_sampler: QuestionSampler):
         self.inner_sampler = inner_sampler

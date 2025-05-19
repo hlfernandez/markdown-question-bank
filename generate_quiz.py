@@ -1,7 +1,7 @@
 import os
 import click
 from markdown_question_bank.parser_bank import BankFolderParser
-from markdown_question_bank.sampler_question import CachedQuestionSampler, RandomQuestionSampler
+from markdown_question_bank.sampler_question import CachedQuestionSampler, RandomQuestionSampler, TopicQuestionSampler
 from markdown_question_bank.sampler_answers import DefaultAnswerStrategySelector, CachedAnswerSampler, DefaultAnswerSampler
 from markdown_question_bank.quiz_builder import QuizBuilder
 from markdown_question_bank.quiz_markdown_exporter import QuizExporter
@@ -19,7 +19,8 @@ from markdown_question_bank.quiz_markdown_exporter import QuizExporter
 @click.option('--shuffle-questions', is_flag=True, default=False, help='Indica se as preguntas deben ser baralladas.')
 @click.option('--group-by-topic', is_flag=True, default=False, help='Indica se as preguntas deben estar agrupadas por tema.')
 @click.option('--exclude-topic', multiple=True, help='Tema(s) a excluír do banco de preguntas. Pode especificarse varias veces.')
-def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alternatives, num_cols, lang, seed, shuffle_answers, shuffle_questions, group_by_topic, exclude_topic):
+@click.option('--equal-questions-per-topic', is_flag=True, default=False, help='Forza o mesmo número de preguntas por tema. Se non hai suficientes dun tema, colleranse aleatoriamente de outros temas.')
+def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alternatives, num_cols, lang, seed, shuffle_answers, shuffle_questions, group_by_topic, exclude_topic, equal_questions_per_topic):
     os.makedirs(outdir, exist_ok=True)
 
     parser = BankFolderParser(min_wrong=num_alternatives - 1)
@@ -28,7 +29,11 @@ def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alterna
     if exclude_topic:
         bank = bank.filter_topics(list(exclude_topic))
 
-    question_sampler = CachedQuestionSampler(RandomQuestionSampler(num_questions))
+    if equal_questions_per_topic:
+        question_sampler = CachedQuestionSampler(TopicQuestionSampler.from_bank(bank, num_questions, seed))
+    else:
+        question_sampler = CachedQuestionSampler(RandomQuestionSampler(num_questions, seed))
+
     answer_sampler = CachedAnswerSampler(DefaultAnswerSampler())
     answer_strategy = DefaultAnswerStrategySelector(answer_sampler)
 
