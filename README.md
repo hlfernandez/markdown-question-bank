@@ -7,6 +7,15 @@ conda env create -f environment.yml
 conda activate markdown-question-bank
 ```
 
+## Bank information
+
+Use the `bank_summary.py` command to get a summary of the bank:
+
+```sh
+export PYTHONPATH=src
+python bank_summary.py --folder-path test_data/bank --num-alternatives 3
+```
+
 ## Building quizes
 
 Show the command help with: `python generate_quiz.py --help`.

@@ -7,6 +7,11 @@
             "command": "rm -rf test_output/*"
         },
         {
+            "label": "Bank Summary",
+            "type": "shell",
+            "command": "export PYTHONPATH=src && python bank_summary.py --folder-path test_data/bank --num-alternatives 3"
+        },  
+        {
             "label": "Generate Quiz 1",
             "type": "shell",
             "command": "export PYTHONPATH=src && python generate_quiz.py --folder-path test_data/all --outdir test_output --num-models 2 --num-questions 6 --num-alternatives 3 --shuffle-answers --num-cols 3 --lang GL --seed 1234",
