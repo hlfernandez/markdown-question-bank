@@ -93,3 +93,26 @@ Que tipo de dato representa `{"a": 1, "b": 2}`?
 - Lista
 - [X] Dicionario
 - Tupla
+
+---
+
+Considerando a asignación inicial da variable A na primeira liña, indica o caso en que se modifica o valor que se mostraría para a variable A despois de executar as outras dúas instrucións:
+
+- Enunciado 1:
+    ```python
+    A = 'Programación II'
+    B = A
+    B = '2025'
+    ```
+- [X] Enunciado 2:
+    ```python
+    A= ['Programación II']
+    B = A
+    B[0] = '2025'
+    ```
+- Enunciado 3:
+    ```python
+    A= ['Programación II']
+    B = A[:]
+    B[0] = '2025'
+    ```
