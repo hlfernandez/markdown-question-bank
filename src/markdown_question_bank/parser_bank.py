@@ -12,11 +12,14 @@ class BankFolderParser:
 
         has_topic_dirs = any(
             os.path.isdir(os.path.join(root_folder, item))
+            and not item.startswith(".")
             for item in os.listdir(root_folder)
         )
 
         if has_topic_dirs:
             for item in sorted(os.listdir(root_folder)):
+                if item.startswith("."):
+                    continue  # Skip hidden directories
                 full_path = os.path.join(root_folder, item)
                 if os.path.isdir(full_path):
                     topic = item
