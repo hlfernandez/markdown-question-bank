@@ -2,9 +2,9 @@ import click
 from markdown_question_bank.parser_bank import BankFolderParser
 
 @click.command()
-@click.option('--folder-path', required=True, type=click.Path(exists=True), help='Ruta ao cartafol co banco de preguntas.')
-@click.option('--num-alternatives', default=4, help='Número de alternativas por pregunta.')
-@click.option('--exclude-topic', multiple=True, help='Tema(s) a excluír do banco de preguntas. Pode especificarse varias veces.')
+@click.option('--folder-path', required=True, type=click.Path(exists=True), help='Path to the folder containing the question bank.')
+@click.option('--num-alternatives', default=4, help='Number of alternatives per question.')
+@click.option('--exclude-topic', multiple=True, help='Topic(s) to exclude from the question bank. Can be specified multiple times.')
 def bank_summary(folder_path, num_alternatives, exclude_topic):
     parser = BankFolderParser(min_wrong=num_alternatives - 1)
     bank = parser.parse(folder_path)
