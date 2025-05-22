@@ -15,6 +15,7 @@ def bank_summary(folder_path, num_alternatives, exclude_topic):
     num_questions = len(bank.get_questions())
     languages = bank.languages if hasattr(bank, 'languages') else []
     topics = bank.get_topics() if hasattr(bank, 'get_topics') else []
+    topics.sort()
 
     print(f"Número de preguntas: {num_questions}")
     print(f"Idiomas dispoñibles: {', '.join(languages) if languages else 'Descoñecido'}")
