@@ -30,7 +30,7 @@ for file in $(find "$MARDOWN_MODELS_DIR" -type f -name "*.md"); do
     # Check if HEADING is a Jinja2 template
     if [[ "$HEADING" == *.jinja2 ]]; then
         # Render the Jinja2 template
-        RENDERED_HEADING=$(mktemp)
+        RENDERED_HEADING=$(mktemp /tmp/rendered_heading.XXXXXX)
         jinja2 "$HEADING" -D filename="$FILE" > "$RENDERED_HEADING"
         pandoc "$RENDERED_HEADING" "$file" --quiet --css="$CSS" --pdf-engine=weasyprint -o "$PDF_FILE"
         rm "$RENDERED_HEADING"
