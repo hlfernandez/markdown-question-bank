@@ -116,3 +116,8 @@ Considerando a asignación inicial da variable A na primeira liña, indica o cas
   B = A[:]
   B[0] = '2025'
   ```
+
+
+| Dificultade | TeachScore |
+|-------------|------------|
+| Alta        | 10         |

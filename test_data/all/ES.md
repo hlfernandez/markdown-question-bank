@@ -116,3 +116,7 @@ Considerando la asignación inicial de la variable A en la primera línea, indic
     B = A[:]
     B[0] = '2025'
     ```
+
+| Dificultad  | TeachScore |
+|-------------|------------|
+| Alta        | 10         |

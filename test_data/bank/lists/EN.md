@@ -4,6 +4,10 @@ What is the value of `lista = [1, 2, 3]; lista[1]`?
 - [X] 2
 - 3
 
+| Difficulty  | TeachScore |
+|-------------|------------|
+| Low         | 1          |
+
 ---
 
 What does `lista.append(4)` do?

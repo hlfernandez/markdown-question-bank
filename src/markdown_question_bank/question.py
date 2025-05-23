@@ -16,12 +16,14 @@ class Question:
         statement: MultilanguageString,
         correct_answers: List[MultilanguageString],
         wrong_answers: List[MultilanguageString],
-        topics: List[str]
+        topics: List[str],
+        metadata: dict[str, dict[str, str]] | None = None
     ):
         self.statement = statement
         self.correct_answers = correct_answers
         self.wrong_answers = wrong_answers
         self.topics = topics
+        self.metadata = metadata if metadata is not None else {}
 
     def get_languages(self) -> List[str]:
         return self.statement.get_languages()
@@ -37,3 +39,6 @@ class Question:
 
     def get_wrong_answers(self) -> List[MultilanguageString]:
         return self.wrong_answers
+
+    def get_metadata(self) -> Dict[str, Dict[str, str]]:
+        return self.metadata

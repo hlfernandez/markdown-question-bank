@@ -4,6 +4,10 @@
 - [X] 2
 - 3
 
+| Dificultad  | TeachScore |
+|-------------|------------|
+| Baja        | 1          |
+
 ---
 
 ¿Qué hace `lista.append(4)`?
