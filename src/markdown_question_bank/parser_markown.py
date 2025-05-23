@@ -27,7 +27,8 @@ class MarkdownFolderParser:
                 is_answer_section = False
 
                 for line in lines:
-                    if line.strip().startswith('- '):
+                    # Detect the start of an answer (correct or not) only if the dash is at the beginning (ignoring whitespace)
+                    if line.lstrip().startswith('- [X]') or (line.lstrip().startswith('-') and not line.lstrip().startswith('- [X]')):
                         is_answer_section = True
                     if is_answer_section:
                         answer_lines.append(line)
@@ -43,26 +44,26 @@ class MarkdownFolderParser:
                 is_correct = False
 
                 for line in answer_lines:
-                    if line.strip().startswith('- [X]'):
+                    if line.lstrip().startswith('- [X]'):
                         if current_answer:
                             answer_text = '\n'.join(current_answer).strip()
                             if is_correct:
                                 correct.append(answer_text)
                             else:
                                 wrong.append(answer_text)
-                        current_answer = [line.strip()[5:].strip()]  # Start a new answer, removing '- [X]'
+                        current_answer = [line.lstrip()[5:].strip()]
                         is_correct = True
-                    elif line.strip().startswith('- '):
+                    elif line.lstrip().startswith('-') and not line.lstrip().startswith('- [X]'):
                         if current_answer:
                             answer_text = '\n'.join(current_answer).strip()
                             if is_correct:
                                 correct.append(answer_text)
                             else:
                                 wrong.append(answer_text)
-                        current_answer = [line.strip()[2:].strip()]  # Start a new answer, removing '- '
+                        current_answer = [line.lstrip()[1:].strip()]
                         is_correct = False
                     else:
-                        current_answer.append(line.strip())
+                        current_answer.append(line)
 
                 # Add the last answer
                 if current_answer:
