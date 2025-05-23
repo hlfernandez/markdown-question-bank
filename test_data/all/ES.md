@@ -98,19 +98,19 @@ print(misterio("abc"))
 
 Considerando la asignación inicial de la variable A en la primera línea, indica el caso en el que se modifica el valor que se mostraría para la variable A después de ejecutar las otras dos instrucciones:
 
-- Enunciado 1:
+- 
     ```python
     A = 'Programación II'
     B = A
     B = '2025'
     ```
-- [X] Enunciado 2:
+- [X]
     ```python
     A= ['Programación II']
     B = A
     B[0] = '2025'
     ```
-- Enunciado 3:
+- 
     ```python
     A= ['Programación II']
     B = A[:]
