@@ -1,6 +1,7 @@
+import sys
+from pfylter.core import NotFilter, AnyFilter
 from markdown_question_bank.parser_bank import BankFolderParser
 from markdown_question_bank.bank_filtered import MetadataQuestionFilter, FilteredBank
-from pfylter.core import NotFilter, AnyFilter
 
 def create_filters(exclude_metadata):
     """
@@ -13,7 +14,7 @@ def create_filters(exclude_metadata):
             filters.append(MetadataQuestionFilter.from_cli_args(arg))
         except ValueError as e:
             print(f"Error parsing filter argument '{arg}': {e}")
-            exit(1)
+            sys.exit(1)
     return filters
 
 
@@ -24,12 +25,12 @@ def create_bank(folder_path, num_alternatives, exclude_topic=None, exclude_metad
     if exclude_topic:
         exclude_topics = list(exclude_topic)
         if verbose:
-            print(f"Excluíndo temas: {', '.join(exclude_topics)}")
+            print(f"Excluding topics: {', '.join(exclude_topics)}")
         bank = bank.filter_topics(exclude_topics)
 
     if exclude_metadata:
         if verbose:
-            print(f"Excluíndo metadatos: {', '.join(exclude_metadata)}")
+            print(f"Excluding metadata: {', '.join(exclude_metadata)}")
         bank = FilteredBank(bank, NotFilter(AnyFilter(create_filters(exclude_metadata))))
 
     return bank
