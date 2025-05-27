@@ -5,6 +5,7 @@ from markdown_question_bank.sampler_question import CachedQuestionSampler, Rando
 from markdown_question_bank.sampler_answers import DefaultAnswerStrategySelector, CachedAnswerSampler, DefaultAnswerSampler
 from markdown_question_bank.quiz_builder import QuizBuilder
 from markdown_question_bank.quiz_markdown_exporter import QuizExporter
+from markdown_question_bank.cli_utils import create_bank
 
 @click.command()
 @click.option('--folder-path', required=True, type=click.Path(exists=True), help='Path to the folder containing the question bank.')
@@ -19,15 +20,12 @@ from markdown_question_bank.quiz_markdown_exporter import QuizExporter
 @click.option('--shuffle-questions', is_flag=True, default=False, help='Shuffle the questions in each model.')
 @click.option('--group-by-topic', is_flag=True, default=False, help='Group questions by topic.')
 @click.option('--exclude-topic', multiple=True, help='Topic(s) to exclude from the question bank. Can be specified multiple times.')
+@click.option('--exclude-metadata', multiple=True, help='Metadata fields to exclude from the question bank. Can be specified multiple times.')
 @click.option('--equal-questions-per-topic', is_flag=True, default=False, help='Force the same number of questions per topic. If a topic does not have enough questions, the remaining will be taken randomly from other topics.')
-def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alternatives, num_cols, lang, seed, shuffle_answers, shuffle_questions, group_by_topic, exclude_topic, equal_questions_per_topic):
+def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alternatives, num_cols, lang, seed, shuffle_answers, shuffle_questions, group_by_topic, exclude_topic, exclude_metadata, equal_questions_per_topic):
     os.makedirs(outdir, exist_ok=True)
 
-    parser = BankFolderParser(min_wrong=num_alternatives - 1)
-    bank = parser.parse(folder_path)
-
-    if exclude_topic:
-        bank = bank.filter_topics(list(exclude_topic))
+    bank = create_bank(folder_path, num_alternatives, exclude_topic, exclude_metadata)
 
     if equal_questions_per_topic:
         question_sampler = CachedQuestionSampler(TopicQuestionSampler.from_bank(bank, num_questions, seed))

@@ -17,7 +17,12 @@
             "command": "source ~/miniconda3/bin/activate markdown-question-bank && export PYTHONPATH=src && python bank_summary.py --folder-path test_data/bank --num-alternatives 3"
         },
         {
-            "label": "Bank Summary 2 (test_data/all with Metadata Filters)",
+            "label": "Bank Summary 2 (test_data/all)",
+            "type": "shell",
+            "command": "source ~/miniconda3/bin/activate markdown-question-bank && export PYTHONPATH=src && python bank_summary.py --folder-path test_data/all --num-alternatives 3"
+        },  
+        {
+            "label": "Bank Summary 3 (test_data/all with Metadata Filters)",
             "type": "shell",
             "command": "source ~/miniconda3/bin/activate markdown-question-bank && export PYTHONPATH=src && python bank_summary.py --folder-path test_data/all --num-alternatives 3 --exclude-metadata ES:Dificultad:Alta --exclude-metadata ES:TeachScore:1"
         },  
