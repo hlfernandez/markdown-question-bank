@@ -4,6 +4,17 @@ from typing import List
 from markdown_question_bank.quiz_model import QuizModel
 from markdown_question_bank.question import Appendix
 
+TRANSLATIONS = {
+    "Appendix": {
+        "EN": "Appendix",
+        "ES": "Anexos",
+        "GL": "Anexos"
+    },
+}
+
+def get_translation_keyword(keyword: str, language: str) -> str:
+    return TRANSLATIONS.get(keyword, {}).get(language, keyword)
+
 class MarkdownQuizModel:
     def __init__(self, quiz_model: QuizModel):
         self.quiz_model = quiz_model
@@ -53,7 +64,8 @@ class MarkdownQuizModel:
     def _render_appendices(self, appendices, language: str) -> list[str]:
         if not appendices:
             return []
-        lines = ["# Appendix", ""]
+        appendix_title = get_translation_keyword("Appendix", language)
+        lines = [f"# {appendix_title}", ""]
         for appendix in appendices:
             title = appendix.get_title()
             content = appendix.get_content().get_translation(language)
