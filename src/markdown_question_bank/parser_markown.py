@@ -1,6 +1,6 @@
 import os
 from typing import List
-from markdown_question_bank.question import Question, MultilanguageString
+from markdown_question_bank.question import Question, MultilanguageString, Appendix
 import re
 
 class MarkdownFolderParser:
@@ -12,13 +12,37 @@ class MarkdownFolderParser:
             for filename in os.listdir(folder) if filename.endswith('.md')
         }
 
+        # --- Parse appendices for each language ---
+        appendices_by_lang: dict[str, dict[str, tuple[str, str]]] = {}
+        for lang, path in language_files.items():
+            with open(path, encoding="utf-8") as f:
+                content = f.read()
+            # Find appendix section
+            appendix_section = re.search(r"^#\s*Anexos(.+)$", content, re.DOTALL | re.MULTILINE)
+            appendices = {}
+            if appendix_section:
+                appendix_text = appendix_section.group(1)
+                # Split by appendix headings (## ...), keep heading in result
+                appendix_blocks = re.split(r'(^##\s+.+$)', appendix_text, flags=re.MULTILINE)
+                # The split will result in ['', '## Title1', '...content1...', '## Title2', '...content2...', ...]
+                for i in range(1, len(appendix_blocks), 2):
+                    heading = appendix_blocks[i].strip()
+                    content_block = appendix_blocks[i+1] if (i+1) < len(appendix_blocks) else ''
+                    title = heading[2:].strip()
+                    code = content_block.strip('\n')
+                    url = f"#{re.sub(r'[^a-zA-Z0-9]+', '-', title.lower()).strip('-')}"
+                    appendices[url] = (title, code)
+            appendices_by_lang[lang] = appendices
+
         questions_by_lang: dict[str, List[tuple[str, List[str], List[str], List[List[str]]]]] = {}
 
         for lang, path in language_files.items():
             with open(path, encoding="utf-8") as f:
                 content = f.read()
+            # Remove appendix section for question parsing
+            content_wo_appendix = re.split(r"^#\s*Anexos", content, maxsplit=1, flags=re.MULTILINE)[0]
             # Split only on lines that are exactly --- (with optional whitespace), not on --- inside tables
-            raw_questions = [q for q in re.split(r'\n\s*---\s*\n', content) if q.strip()]
+            raw_questions = [q for q in re.split(r'\n\s*---\s*\n', content_wo_appendix) if q.strip()]
             parsed: List[tuple[str, List[str], List[str], List[List[str]]]] = []
             # Remove leading/trailing empty lines from each block before splitting into lines
             for block in raw_questions:
@@ -110,6 +134,32 @@ class MarkdownFolderParser:
         toret: List[Question] = []
         for i in range(question_count):
             statements = {lang: questions_by_lang[lang][i][0] for lang in questions_by_lang}
+            # Detect appendix reference in statement (e.g., [este anexo](#code-1))
+            appendix_url = None
+            appendix_title = None
+            appendix_contents = {}
+            # Find appendix reference in each language's statement
+            appendix_urls_per_lang = {}
+            for lang, statement in statements.items():
+                match = re.search(r'\[.*?\]\((#code-[^)]+)\)', statement)
+                if match:
+                    appendix_urls_per_lang[lang] = match.group(1)
+            # Only associate appendix if all languages reference the same appendix url
+            if appendix_urls_per_lang and len(set(appendix_urls_per_lang.values())) == 1:
+                appendix_url = next(iter(appendix_urls_per_lang.values()))
+                for lang in questions_by_lang:
+                    appendix = appendices_by_lang.get(lang, {}).get(appendix_url)
+                    if appendix:
+                        appendix_title, appendix_code = appendix
+                        appendix_contents[lang] = appendix_code
+            appendix_obj = None
+            if appendix_contents:
+                appendix_obj = Appendix(
+                    title=appendix_title,
+                    url=appendix_url,
+                    content=MultilanguageString(appendix_contents)
+                )
+
             corrects = {lang: questions_by_lang[lang][i][1] for lang in questions_by_lang}
             if len(set(len(corrects[lang]) for lang in corrects)) != 1:
                 raise ValueError(f"Na pregunta {statements} non hai o mesmo número de respostas correctas en todos os idiomas.")
@@ -139,7 +189,7 @@ class MarkdownFolderParser:
             correct_answers_ml = [MultilanguageString({lang: corrects[lang][j] for lang in corrects}) for j in range(len(next(iter(corrects.values()))))]
             wrong_answers_ml = [MultilanguageString({lang: wrongs[lang][j] for lang in wrongs}) for j in range(len(next(iter(wrongs.values()))))]
 
-            toret.append(Question(statement_ml, correct_answers_ml, wrong_answers_ml, topics, metadata=metadata_dict))
+            toret.append(Question(statement_ml, correct_answers_ml, wrong_answers_ml, topics, metadata=metadata_dict, appendix=appendix_obj))
 
         return toret
 
@@ -147,6 +197,13 @@ class MarkdownFolderParser:
 if __name__ == "__main__":
     parser = MarkdownFolderParser()
     test_questions = parser.parse("test_data/all", topics=["topic1", "topic2"])
+    for question in test_questions:
+        if question.get_appendix():
+            print(question.get_statement().get_translation("GL"))
+            print(question.get_appendix().get_title())
+            print(question.get_appendix().get_url())
+            print(question.get_appendix().get_content())
+    exit(0)
     for question in test_questions:
         print('*' * 20)
         print(question.get_statement().get_translation("GL"))

@@ -1,6 +1,8 @@
 import math
+import re
 from typing import List
 from markdown_question_bank.quiz_model import QuizModel
+from markdown_question_bank.question import Appendix
 
 class MarkdownQuizModel:
     def __init__(self, quiz_model: QuizModel):
@@ -48,21 +50,49 @@ class MarkdownQuizModel:
 
         return lines
 
+    def _render_appendices(self, appendices, language: str) -> list[str]:
+        if not appendices:
+            return []
+        lines = ["# Appendix", ""]
+        for appendix in appendices:
+            title = appendix.get_title()
+            content = appendix.get_content().get_translation(language)
+            lines.append(f"## {title}")
+            lines.append("")
+            lines.append(content)
+            lines.append("")
+        return lines
+
     def render_markdown(self, language: str, num_cols: int = 4, with_true_answers: bool = False) -> str:
         lines = []
-
+        appendices = set()
         # Táboas de respostas en bloques
         lines.extend(self._render_answer_tables(num_cols, with_true_answers))
 
         # Construír preguntas
         for i, question in enumerate(self.quiz_model.get_questions(), 1):
-            lines.append(f"**{i}**. {question.statement.get_translation(language)}")
+            # Collect appendix if present
+            appendix = getattr(question, 'get_appendix', lambda: None)()
+            if appendix:
+                appendices.add(appendix)
+            # Replace appendix link in statement
+            statement = question.statement.get_translation(language)
+            def repl(m):
+                # m.group(1) is the link text, m.group(2) is the anchor
+                for app in appendices:
+                    if app.get_url() == m.group(2):
+                        return f"{m.group(1)} ({app.get_title()})"
+                return m.group(1)
+            statement = re.sub(r'\[(.*?)\]\((#.*?)\)', repl, statement)
+            lines.append(f"**{i}**. {statement}")
             lines.append("")
             for idx, option in enumerate(question.options):
                 prefix = "- [X] " if with_true_answers and idx in question.correct_indices else "- "
                 lines.append(f"{prefix}{option.get_translation(language)}")
             lines.append("")
 
+        # Render appendices at the end
+        lines.extend(self._render_appendices(appendices, language))
         return "\n".join(lines)
 
     def to_file(self, output_path: str, language: str, num_cols: int = 4, with_true_answers: bool = False):

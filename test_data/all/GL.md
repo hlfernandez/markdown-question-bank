@@ -6,14 +6,7 @@ Cal destas opcións describe mellor o propósito da función `range(3)` en Pytho
 
 ---
 
-Que imprime o seguinte código en Python?
-
-```python
-def misterio(x):
-    return x[::-1]
-
-print(misterio("abc"))
-````
+Dado o código Python de [este anexo](#code-1), indica cales serían o seu comportamento e saída por consola:
 
 - [X] A función inverte a cadea de caracteres.
   A saída sería: `cba`.
@@ -125,3 +118,14 @@ Considerando a asignación inicial da variable A na primeira liña, indica o cas
 | Dificultade | TeachScore |
 |-------------|------------|
 | Alta        | 10         |
+
+# Anexos
+
+## Code 1
+
+```python
+def misterio(x):
+    return x[::-1]
+
+print(misterio("abc"))
+```

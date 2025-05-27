@@ -51,11 +51,13 @@ class QuizBuilder:
                     random.shuffle(zipped)
                     new_options, permutation = zip(*zipped)
                     new_correct = [permutation.index(i) for i in quiz_q.correct_indices]
+
                     quiz_q = QuizQuestion(
                         statement=quiz_q.statement,
                         options=list(new_options),
                         correct_indices=new_correct,
-                        shufflable=quiz_q.shufflable
+                        shufflable=quiz_q.shufflable,
+                        appendix=q.get_appendix()                      
                     )
 
                 quiz_questions.append(quiz_q)

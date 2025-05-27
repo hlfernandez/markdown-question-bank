@@ -34,7 +34,8 @@ class DefaultAnswerSampler(AnswerSampler):
             statement=question.get_statement(),
             options=options,
             correct_indices=correct_indices,
-            shufflable=True
+            shufflable=True,
+            appendix=question.get_appendix()
         )
 
 class CachedAnswerSampler(AnswerSampler):

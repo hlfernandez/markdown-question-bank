@@ -1,6 +1,6 @@
 from typing import List
 from dataclasses import dataclass
-from markdown_question_bank.question import MultilanguageString
+from markdown_question_bank.question import MultilanguageString, Appendix
 
 @dataclass
 class QuizQuestion:
@@ -8,9 +8,13 @@ class QuizQuestion:
     options: List[MultilanguageString]
     correct_indices: List[int]
     shufflable: bool = True
+    appendix: Appendix | None = None
 
     def is_shufflable(self) -> bool:
         return self.shufflable
+    
+    def get_appendix(self) -> Appendix | None:
+        return self.appendix
 
 @dataclass
 class QuizModel:

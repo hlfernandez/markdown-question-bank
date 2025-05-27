@@ -6,14 +6,7 @@
 
 ---
 
-¿Qué imprime el siguiente código en Python?
-
-```python
-def misterio(x):
-    return x[::-1]
-
-print(misterio("abc"))
-````
+Dado el código Python de [este anexo](#code-1), indica cuáles serían su comportamento y salida por consola:
 
 - [X] La función invierte la cadena de caracteres.
   La salida sería: `cba`.
@@ -124,3 +117,14 @@ Considerando la asignación inicial de la variable A en la primera línea, indic
 | Dificultad  | TeachScore |
 |-------------|------------|
 | Alta        | 10         |
+
+# Anexos
+
+## Code 1
+
+```python
+def misterio(x):
+    return x[::-1]
+
+print(misterio("abc"))
+```
