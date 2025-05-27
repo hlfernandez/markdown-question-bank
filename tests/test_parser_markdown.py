@@ -21,7 +21,7 @@ def test_parse_all_folder():
     for q in questions:
         assert "GL" in q.get_languages()
         assert "ES" in q.get_languages()
-        assert len(q.get_languages()) == 2, "There must be 2 language files in the test_data/all folder"
+        assert len(q.get_languages()) == 3, "There must be 2 language files in the test_data/all folder"
         assert len(q.get_right_answers()) == 1
         assert len(q.get_wrong_answers()) == 2
         assert len(q.get_right_answers()) == 1
