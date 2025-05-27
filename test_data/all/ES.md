@@ -94,6 +94,10 @@ print(misterio("abc"))
 - [X] Diccionario
 - Tupla
 
+| Dificultad  | TeachScore |
+|-------------|------------|
+| Baja        | 1          |
+
 ---
 
 Considerando la asignación inicial de la variable A en la primera línea, indica el caso en el que se modifica el valor que se mostraría para la variable A después de ejecutar las otras dos instrucciones:

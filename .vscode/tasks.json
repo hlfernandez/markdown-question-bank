@@ -2,14 +2,24 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Update Conda environment",
+            "type": "shell",
+            "command": "conda env update --file environment.yml"
+        },
+        {
             "label": "Clean Output",
             "type": "shell",
             "command": "rm -rf test_output/*"
         },
         {
-            "label": "Bank Summary",
+            "label": "Bank Summary 1 (test_data/bank)",
             "type": "shell",
             "command": "source ~/miniconda3/bin/activate markdown-question-bank && export PYTHONPATH=src && python bank_summary.py --folder-path test_data/bank --num-alternatives 3"
+        },
+        {
+            "label": "Bank Summary 2 (test_data/all with Metadata Filters)",
+            "type": "shell",
+            "command": "source ~/miniconda3/bin/activate markdown-question-bank && export PYTHONPATH=src && python bank_summary.py --folder-path test_data/all --num-alternatives 3 --exclude-metadata ES:Dificultad:Alta --exclude-metadata ES:TeachScore:1"
         },  
         {
             "label": "Generate Quiz 1",

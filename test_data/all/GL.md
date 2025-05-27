@@ -94,6 +94,10 @@ Que tipo de dato representa `{"a": 1, "b": 2}`?
 - [X] Dicionario
 - Tupla
 
+| Dificultade | TeachScore |
+|-------------|------------|
+| Baixa       | 1          |
+
 ---
 
 Considerando a asignación inicial da variable A na primeira liña, indica o caso en que se modifica o valor que se mostraría para a variable A despois de executar as outras dúas instrucións:

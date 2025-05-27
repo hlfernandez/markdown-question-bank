@@ -12,3 +12,4 @@ dependencies:
   - pip
   - pip:
       - jinja2-cli
+      - pfylter==0.2.1

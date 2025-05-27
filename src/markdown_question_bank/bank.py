@@ -25,6 +25,9 @@ class Bank:
 
     def get_questions(self) -> List[Question]:
         return self.questions
+    
+    def get_min_wrong(self) -> int:
+        return self.min_wrong
 
     def get_topics(self) -> List[str]:
         topics = set()
@@ -43,3 +46,6 @@ class Bank:
         ]
 
         return Bank(filtered_questions, self.min_wrong)
+
+    def get_languages(self) -> List[str]:
+        return self.languages
