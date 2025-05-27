@@ -14,12 +14,12 @@ def bank_summary(folder_path, num_alternatives, exclude_topic, exclude_metadata)
     topics = bank.get_topics() if hasattr(bank, 'get_topics') else []
     topics.sort()
 
-    print(f"Número de preguntas: {num_questions}")
-    print(f"Idiomas dispoñibles: {', '.join(languages) if languages else 'Descoñecido'}")
-    print(f"Temas dispoñibles: {', '.join(topics) if topics else 'Descoñecido'}")
-
+    print(f"Number of questions: {num_questions}")
+    print(f"Available languages: {', '.join(languages) if languages else 'NA'}")
     if topics:
-        print("Preguntas por tema:")
+        print(f"Available topics: {', '.join(topics) if topics else 'NA'}")
+
+        print("Number of questions by topic:")
         for topic in topics:
             count = len(bank.get_questions_by_topic(topic))
             print(f"  - {topic}: {count}")
