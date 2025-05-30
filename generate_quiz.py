@@ -48,7 +48,7 @@ def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alterna
     )
 
     models = quiz.build_models()
-    languages = [lang] if lang else bank.languages
+    languages = [lang] if lang else bank.get_languages()
 
     exporter = QuizExporter(outdir, num_cols)
     generated_files = exporter.export_models(models, languages)

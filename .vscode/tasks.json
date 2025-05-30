@@ -34,7 +34,13 @@
             "type": "shell",
             "command": "source ~/miniconda3/bin/activate markdown-question-bank && export PYTHONPATH=src && python generate_quiz.py --folder-path test_data/all --outdir test_output --num-models 2 --num-questions 12 --num-alternatives 3 --shuffle-answers --num-cols 3 --lang GL --seed 1234",
             "dependsOn": "Clean Output"
-        },    
+        },  
+        {
+            "label": "Generate Quiz 1.1 (with metadata filters)",
+            "type": "shell",
+            "command": "source ~/miniconda3/bin/activate markdown-question-bank && export PYTHONPATH=src && python generate_quiz.py --folder-path test_data/all --outdir test_output --num-models 2 --num-questions 6 --num-alternatives 3 --shuffle-answers --num-cols 3 --lang GL --seed 1234 --exclude-metadata ES:Dificultad:Alta --exclude-metadata ES:TeachScore:1",
+            "dependsOn": "Clean Output"
+        },  
         {
             "label": "Generate PDF 1.1 (fixed header)",
             "type": "shell",
