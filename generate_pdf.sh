@@ -43,14 +43,16 @@ for file in $(find "$MARDOWN_MODELS_DIR" -type f -name "*.md"); do
         RENDERED_HEADING=$(mktemp /tmp/rendered_heading.XXXXXX)
         jinja2 "$HEADING" -D filename="$FILE" > "$RENDERED_HEADING"
         if [ "$KEEP_HTML" = true ]; then
-	        pandoc "$RENDERED_HEADING" "$file" --quiet --css="$CSS" -o "${PDF_FILE}.html"
+	        pandoc "$RENDERED_HEADING" "$file" --quiet --css="$CSS" --standalone -o "${PDF_FILE}.html"
+            cp $CSS $DIR
         fi
 	    pandoc "$RENDERED_HEADING" "$file" --quiet --css="$CSS" --pdf-engine=weasyprint -o "$PDF_FILE"
         rm "$RENDERED_HEADING"
     else
         # Use the HEADING file directly
         if [ "$KEEP_HTML" = true ]; then
-            pandoc "$HEADING" "$file" --quiet --css="$CSS" -o "${PDF_FILE}.html"
+            pandoc "$HEADING" "$file" --quiet --css="$CSS" --standalone -o "${PDF_FILE}.html"
+            cp $CSS $DIR
         fi
         pandoc "$HEADING" "$file" --quiet --css="$CSS" --pdf-engine=weasyprint -o "$PDF_FILE"
     fi
