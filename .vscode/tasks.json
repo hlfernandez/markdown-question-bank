@@ -50,7 +50,7 @@
         {
             "label": "Generate PDF 1.2 (template header)",
             "type": "shell",
-            "command": "source ~/miniconda3/bin/activate markdown-question-bank && timestamp_dir=$(ls test_output/ | tail -1) && ./generate_pdf.sh -d test_output/${timestamp_dir} -h test_files/head.jinja2 -c test_files/style.css",
+            "command": "source ~/miniconda3/bin/activate markdown-question-bank && timestamp_dir=$(ls test_output/ | tail -1) && ./generate_pdf.sh -d test_output/${timestamp_dir} -h test_files/head.jinja2 -c test_files/style.css -k",
             "dependsOn": "Generate Quiz 1"
         },
 

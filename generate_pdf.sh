@@ -36,6 +36,7 @@ for file in $(find "$MARDOWN_MODELS_DIR" -type f -name "*.md"); do
     DIR=$(dirname "$file")
     FILE=$(basename "$file")
     PDF_FILE="$DIR/$(basename "$FILE" .md).pdf"
+    HTML_FILE="$DIR/$(basename "$FILE" .md).html"
 
     # Check if HEADING is a Jinja2 template
     if [[ "$HEADING" == *.jinja2 ]]; then
@@ -48,7 +49,7 @@ for file in $(find "$MARDOWN_MODELS_DIR" -type f -name "*.md"); do
 
     # Keep the html files if requested (in fact, we generate html again with pandoc and embed the CSS to be more portable)
     if [ "$KEEP_HTML" = true ]; then
-        pandoc "$HEADING" "$file" --quiet --css="$CSS" --standalone -o "${PDF_FILE}.html.tmp"
+        pandoc "$HEADING" "$file" --quiet --css="$CSS" --standalone -o "${HTML_FILE}.tmp"
 
         # Embed the CSS into the HTML file, replacing the link tag with the CSS content inside a style tag
         awk -v cssfile="$CSS" '
@@ -60,7 +61,7 @@ for file in $(find "$MARDOWN_MODELS_DIR" -type f -name "*.md"); do
             next;
         }
         { print }
-        ' "${PDF_FILE}.html.tmp" > "${PDF_FILE}.html"
-        rm "${PDF_FILE}.html.tmp"
+        ' "${PDF_FILE}.tmp" > "${HTML_FILE}"
+        rm "${PDF_FILE}.tmp"
     fi
 done
