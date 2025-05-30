@@ -15,6 +15,23 @@ usage() {
 # Initialize KEEP_HTML flag
 KEEP_HTML=false
 
+# Function to embed CSS into HTML
+embed_css_in_html() {
+    local css_file="$1"
+    local html_in_file="$2"
+    local html_out_file="$3"
+    awk -v cssfile="$css_file" '
+    /<link rel="stylesheet" href=.*\/>/ {
+        print "<style>";
+        while ((getline line < cssfile) > 0) print line;
+        close(cssfile);
+        print "</style>";
+        next;
+    }
+    { print }
+    ' "$html_in_file" > "$html_out_file"
+}
+
 # Parse command-line arguments
 while getopts "d:h:c:k" opt; do
     case $opt in
@@ -43,16 +60,18 @@ for file in $(find "$MARDOWN_MODELS_DIR" -type f -name "*.md"); do
         RENDERED_HEADING=$(mktemp /tmp/rendered_heading.XXXXXX)
         jinja2 "$HEADING" -D filename="$FILE" > "$RENDERED_HEADING"
         if [ "$KEEP_HTML" = true ]; then
-	        pandoc "$RENDERED_HEADING" "$file" --quiet --css="$CSS" --standalone -o "${PDF_FILE}.html"
-            cp $CSS $DIR
+	        pandoc "$RENDERED_HEADING" "$file" --quiet --css="$CSS" --standalone -o "${PDF_FILE}.html.tmp"
+            embed_css_in_html "$CSS" "${PDF_FILE}.html.tmp" "${PDF_FILE}.html"
+            rm "${PDF_FILE}.html.tmp"
         fi
 	    pandoc "$RENDERED_HEADING" "$file" --quiet --css="$CSS" --pdf-engine=weasyprint -o "$PDF_FILE"
         rm "$RENDERED_HEADING"
     else
         # Use the HEADING file directly
         if [ "$KEEP_HTML" = true ]; then
-            pandoc "$HEADING" "$file" --quiet --css="$CSS" --standalone -o "${PDF_FILE}.html"
-            cp $CSS $DIR
+            pandoc "$HEADING" "$file" --quiet --css="$CSS" --standalone -o "${PDF_FILE}.html.tmp"
+            embed_css_in_html "$CSS" "${PDF_FILE}.html.tmp" "${PDF_FILE}.html"
+            rm "${PDF_FILE}.html.tmp"
         fi
         pandoc "$HEADING" "$file" --quiet --css="$CSS" --pdf-engine=weasyprint -o "$PDF_FILE"
     fi
