@@ -26,14 +26,84 @@ conda activate markdown-question-bank
 
 ---
 
+## 🗂️ Questions Format
+
+The bank of questions consists of one or several Markdown files that can be optionally organized in subfolders that act as topics. Within each file, questions are writen in Markdown and separated by `---`. The right answer is marked with an `[X]` at the beginning, righ after the list symbol. Here is a sample question:
+
+```markdown
+What is the result of `len("Python")`?
+
+- 5
+- [X] 6
+- 7
+```
+
+### ℹ️ Metadata
+
+Optionally, a question may include a metadata table after the list of possible choices. For instance, the following question will be associated to `Difficulty = Low` and `TeachScore = 2`.
+```markdown
+What is the result of `len("Python")`?
+
+- 5
+- [X] 6
+- 7
+
+| Difficulty  | TeachScore |
+|-------------|------------|
+| Low         | 2          |
+```
+These metadata keys can be used later for excluding questions with the `--exclude-metadata` option or to implement other custom filterings or groupings.
+
+### 📄 Code Appendices
+
+Several questions may refer to the same piece of code. To avoid repating it across them and having long quizes, code appendices can be created at the end of each Markdown file as follows:
+
+````markdown
+# Appendices
+
+## Code 1
+
+```python
+def misterio(x):
+    return x[::-1]
+
+print(misterio("abc"))
+```
+````
+
+And then the appendix is refered in the question as follows:
+```markdown
+Given the Python code from [this appendix](#code-1), indicate what its behavior and console output would be:
+
+- [X] The function reverses the string.
+  The output would be: `cba`.
+- The function removes the first letter and prints the remaining string.
+  The output would be: `bc`.
+- The function transforms the string to uppercase.
+  The output would be: `ABC`.
+```
+
+This way, if the question is included in the bank and sampled for building a quiz, the corresponding appendix will be added at the end of the quiz.
+
+---
+
 ## 📊 Bank Information
 
 Use the `bank_summary.py` command to get a summary of the bank:
 
 ```sh
 export PYTHONPATH=src
-python bank_summary.py --folder-path test_data/bank --num-alternatives 3
+python bank_summary.py \
+  --folder-path test_data/bank \
+  --num-alternatives 3
 ```
+
+### Filters
+
+This command allows two filters (also available in the `generate_quiz.py` command):
+
+- `--exclude-topic`: Topic(s) to exclude from the question bank. Can be specified multiple times.
+- `--exclude-metadata`: Metadata fields to exclude from the question bank. Can be specified multiple times. It must follow the following format: `<language>:<field_name>:<value>`.
 
 ---
 
@@ -48,6 +118,9 @@ python generate_quiz.py --help
 
 **Interesting flags:**
 - `--equal-questions-per-topic`: Distributes the total number of questions as evenly as possible across all topics. If a topic does not have enough available questions, the remaining questions are taken from other topics with more questions.
+- `--group-by-topic`: Groups questions by topic. Otherwise questions appear in a random order.
+
+Below are provided some examples of this command.
 
 ### ✨ Example 1: Without Topics
 
