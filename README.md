@@ -1,5 +1,7 @@
 # 📝 Markdown Question Bank
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 > **A flexible, multilingual, and scriptable question bank system for building quizzes and generating printable PDFs from Markdown.**
 
 ---
@@ -98,7 +100,7 @@ python bank_summary.py \
   --num-alternatives 3
 ```
 
-### Filters
+### 🧲 Filters
 
 This command allows two filters (also available in the `generate_quiz.py` command):
 
@@ -183,6 +185,16 @@ If you want your heading file to be dynamic, you can use Jinja2 in your heading 
 ```sh
 ./generate_pdf.sh -d test_output -h test_files/head.jinja2 -c test_files/style.css
 ```
+
+---
+
+## 👥 Contributors
+
+<a href="https://github.com/hlfernandez/markdown-question-bank/">
+  <img src="https://contrib.rocks/image?repo=hlfernandez/markdown-question-bank"/>
+</a>
+
+<sup>Made with [contrib.rocks](https://contrib.rocks).</sup>
 
 ---
 
