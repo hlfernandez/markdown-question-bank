@@ -61,7 +61,7 @@ for file in $(find "$MARDOWN_MODELS_DIR" -type f -name "*.md"); do
             next;
         }
         { print }
-        ' "${PDF_FILE}.tmp" > "${HTML_FILE}"
-        rm "${PDF_FILE}.tmp"
+        ' "${HTML_FILE}.tmp" > "${HTML_FILE}"
+        rm "${HTML_FILE}.tmp"
     fi
 done
