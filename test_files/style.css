@@ -33,3 +33,11 @@ pre {
 ul {
     list-style-type: upper-alpha;
 }
+
+@page {
+  @bottom-center {
+    content: counter(page) "/" counter(pages);
+    font-size: 10pt;
+    color: #888;
+  }
+}
