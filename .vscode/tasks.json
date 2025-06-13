@@ -72,6 +72,13 @@
             "type": "shell",
             "command": "source ~/miniconda3/bin/activate markdown-question-bank && export PYTHONPATH=src && python generate_quiz.py --folder-path test_data/bank --outdir test_output --num-models 2 --num-questions 6 --num-alternatives 3 --shuffle-answers --group-by-topic --num-cols 3 --lang GL --seed 1234 --exclude-topic strings",
             "dependsOn": "Clean Output"
-        }      
+        },
+    
+        {
+            "label": "Generate Programming Exam 1",
+            "type": "shell",
+            "command": "source ~/miniconda3/bin/activate markdown-question-bank && export PYTHONPATH=src && python generate_programming_exam.py --folder-path test_data/programming --outdir test_output/programming --lang GL --models-config test_data/programming/models.json",
+            "dependsOn": "Clean Output"
+        } 
     ]
 }

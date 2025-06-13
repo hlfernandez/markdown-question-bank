@@ -1,0 +1,16 @@
+{
+    "models:": [
+        {
+            "problems": [
+                { "dir": "lists_1", "score": "5"},
+                { "dir": "strings_1", "score": "5"}
+            ]
+        },
+        {
+            "problems": [
+                { "dir": "lists_2", "score": "5" },
+                { "dir": "strings_2", "score": "5"}
+            ]
+        }
+    ]
+}
