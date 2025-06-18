@@ -31,6 +31,9 @@ if [ -z "$MARDOWN_MODELS_DIR" ] || [ -z "$HEADING" ] || [ -z "$CSS" ]; then
     usage
 fi
 
+# Store original heading to allow re-rendering per file if it's a template
+ORIGINAL_HEADING="$HEADING"
+
 # Main logic
 for file in $(find "$MARDOWN_MODELS_DIR" -type f -name "*.md"); do
     DIR=$(dirname "$file")
@@ -38,18 +41,17 @@ for file in $(find "$MARDOWN_MODELS_DIR" -type f -name "*.md"); do
     PDF_FILE="$DIR/$(basename "$FILE" .md).pdf"
     HTML_FILE="$DIR/$(basename "$FILE" .md).html"
 
-    # Check if HEADING is a Jinja2 template
-    if [[ "$HEADING" == *.jinja2 ]]; then
-        # Render the Jinja2 template
-        RENDERED_HEADING=$(mktemp /tmp/rendered_heading.XXXXXX)
-        jinja2 "$HEADING" -D filename="$FILE" > "$RENDERED_HEADING"
-        HEADING=$RENDERED_HEADING
+    HEADING_TO_USE="$ORIGINAL_HEADING"
+    # Check if heading is a Jinja2 template and render it per file
+    if [[ "$ORIGINAL_HEADING" == *.jinja2 ]]; then
+        HEADING_TO_USE=$(mktemp /tmp/rendered_heading.XXXXXX)
+        jinja2 "$ORIGINAL_HEADING" -D filename="$FILE" > "$HEADING_TO_USE"
     fi
-    pandoc "$HEADING" "$file" --quiet --css="$CSS" --pdf-engine=weasyprint -o "$PDF_FILE"
+    pandoc "$HEADING_TO_USE" "$file" --quiet --css="$CSS" --pdf-engine=weasyprint -o "$PDF_FILE"
 
     # Keep the html files if requested (in fact, we generate html again with pandoc and embed the CSS to be more portable)
     if [ "$KEEP_HTML" = true ]; then
-        pandoc "$HEADING" "$file" --quiet --css="$CSS" --standalone -o "${HTML_FILE}.tmp"
+        pandoc "$HEADING_TO_USE" "$file" --quiet --css="$CSS" --standalone -o "${HTML_FILE}.tmp"
 
         # Embed the CSS into the HTML file, replacing the link tag with the CSS content inside a style tag
         awk -v cssfile="$CSS" '
@@ -63,5 +65,9 @@ for file in $(find "$MARDOWN_MODELS_DIR" -type f -name "*.md"); do
         { print }
         ' "${HTML_FILE}.tmp" > "${HTML_FILE}"
         rm "${HTML_FILE}.tmp"
+    fi
+    # Remove temporary rendered heading
+    if [[ "$ORIGINAL_HEADING" == *.jinja2 ]]; then
+        rm "$HEADING_TO_USE"
     fi
 done
