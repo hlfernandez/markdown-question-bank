@@ -1,0 +1,15 @@
+[project]
+name = "question-bank"
+version = "0.1.0"
+description = "A tool for generating quiz and programming exam models from markdown question banks."
+authors = [
+  { name="Hugo López Fernández", email="hlfernandez@uvigo.gal" },
+  { name="Daniel González Peña", email="dgpena@uvigo.gal" }
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Source = "https://github.com/hlfernandez/markdown-question-bank/"

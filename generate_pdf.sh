@@ -34,6 +34,22 @@ fi
 # Store original heading to allow re-rendering per file if it's a template
 ORIGINAL_HEADING="$HEADING"
 
+# Get version and commit from pyproject.toml and git if available
+PROJECT_ROOT="$(dirname "$0")"
+if [ -f "$PROJECT_ROOT/pyproject.toml" ]; then
+    VERSION=$(grep '^version' "$PROJECT_ROOT/pyproject.toml" | head -1 | cut -d '"' -f2)
+    if [ -z "$VERSION" ]; then
+        VERSION=$(grep '^version' "$PROJECT_ROOT/pyproject.toml" | head -1 | cut -d "'" -f2)
+    fi
+else
+    VERSION="unknown"
+fi
+if git -C "$PROJECT_ROOT" rev-parse --short HEAD > /dev/null 2>&1; then
+    COMMIT=$(git -C "$PROJECT_ROOT" rev-parse --short HEAD)
+else
+    COMMIT="unknown"
+fi
+
 # Main logic
 for file in $(find "$MARDOWN_MODELS_DIR" -type f -name "*.md"); do
     DIR=$(dirname "$file")
@@ -48,6 +64,7 @@ for file in $(find "$MARDOWN_MODELS_DIR" -type f -name "*.md"); do
         jinja2 "$ORIGINAL_HEADING" -D filename="$FILE" > "$HEADING_TO_USE"
     fi
     pandoc "$HEADING_TO_USE" "$file" --quiet --css="$CSS" --pdf-engine=weasyprint -o "$PDF_FILE"
+    exiftool -overwrite_original -Producer="question-bank $VERSION ($COMMIT)" "$PDF_FILE"
 
     # Keep the html files if requested (in fact, we generate html again with pandoc and embed the CSS to be more portable)
     if [ "$KEEP_HTML" = true ]; then

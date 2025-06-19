@@ -6,6 +6,7 @@ from markdown_question_bank.sampler_answers import DefaultAnswerStrategySelector
 from markdown_question_bank.quiz_builder import QuizBuilder
 from markdown_question_bank.quiz_markdown_exporter import QuizExporter
 from markdown_question_bank.cli_utils import create_bank
+from markdown_question_bank.version_utils import get_version_and_commit, write_version_file
 
 @click.command()
 @click.option('--folder-path', required=True, type=click.Path(exists=True), help='Path to the folder containing the question bank.')
@@ -56,6 +57,11 @@ def generate_quizzes(folder_path, outdir, num_models, num_questions, num_alterna
     click.echo("Output files:")
     for path in generated_files:
         click.echo(f" - {path}")
+
+    if generated_files:
+        timestamped_dir = os.path.dirname(generated_files[0])
+        version, commit = get_version_and_commit()
+        write_version_file(timestamped_dir, version, commit)
 
 
 if __name__ == '__main__':
