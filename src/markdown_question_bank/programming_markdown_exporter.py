@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 class ProgrammingMarkdownExporter:
     def __init__(self, outdir: str):
@@ -10,18 +11,27 @@ class ProgrammingMarkdownExporter:
             'GL': {'Question': 'Pregunta', 'Score': 'Puntuación'}
         }
 
+    def get_timestamped_dir(self):
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamped_dir = os.path.join(self.outdir, timestamp)
+        os.makedirs(timestamped_dir, exist_ok=True)
+
+        return timestamped_dir
+
     def export_models(self, programming_bank, programming_models, languages):
         generated_files = []
+        current_outdir = self.get_timestamped_dir()
         for model_idx, model in enumerate(programming_models):
             for lang in languages:
-                filename = self._get_filename(model_idx, lang)
+                filename = ProgrammingMarkdownExporter._get_filename(current_outdir, model_idx, lang)
                 with open(filename, 'w', encoding='utf-8') as f:
                     self._write_model(f, model, programming_bank, lang)
                 generated_files.append(filename)
         return generated_files
 
-    def _get_filename(self, model_idx, lang):
-        return os.path.join(self.outdir, f"model_{model_idx+1}_{lang}.md")
+    @staticmethod
+    def _get_filename(outdir, model_idx, lang):
+        return os.path.join(outdir, f"model_{model_idx+1}_{lang}.md")
 
     def _write_model(self, file_handle, model, programming_bank, lang):
         for idx, qinfo in enumerate(model.questions):

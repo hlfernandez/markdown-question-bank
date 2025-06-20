@@ -1,9 +1,9 @@
+import os
 import click
 from markdown_question_bank.parser_programming_bank import ProgrammingBankParser
 from markdown_question_bank.programming_models import ProgrammingModels
 from markdown_question_bank.programming_markdown_exporter import ProgrammingMarkdownExporter
 from markdown_question_bank.version_utils import get_version_and_commit, write_version_file
-import os
 
 @click.command()
 @click.option('--folder-path', required=True, type=click.Path(exists=True), help='Path to the folder containing the programming bank.')
@@ -18,6 +18,7 @@ def generate_programming_exam(folder_path, outdir, models_config, lang):
     programming_models = ProgrammingModels.from_json(models_config)
     exporter = ProgrammingMarkdownExporter(outdir)
     generated_files = exporter.export_models(programming_bank, programming_models, languages)
+
     click.echo("Output files:")
     for path in generated_files:
         click.echo(f" - {path}")
