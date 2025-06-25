@@ -6,6 +6,29 @@
 
 ---
 
+## 📋 Table of contents
+
+- [📦 Features](#-features)
+- [🛠️ Getting Started](#-getting-started)
+    - [🐍 Conda Environment](#-conda-environment)
+- [🗂️ Questions Format](#-questions-format)
+    - [ℹ️ Metadata](#-metadata)
+    - [📄 Code Appendices](#-code-appendices)
+- [📊 Bank Information](#-bank-information)
+    - [🧲 Filters](#%F0%9F%A7%B2-filters)
+- [🏗️ Building Quizzes](#-building-quizzes)
+    - [✨ Example 1: Without Topics](#-example-1-without-topics)
+    - [🗃️ Example 2: With Topics](#-example-2-with-topics)
+- [🖨️ Building PDFs](#-building-pdfs)
+    - [🧪 Advanced: Jinja2 Headings](#%F0%9F%A7%AA-advanced-jinja2-headings)
+- [👨‍💻 Developers](#%E2%80%8D-developers)
+    - [🔄 Updating Version](#-updating-version)
+    - [🧪 Running Tests](#%F0%9F%A7%AA-running-tests)
+- [👥 Contributors](#-contributors)
+- [🤝 Contributing](#-contributing)
+
+---
+
 ## 📦 Features
 
 - 🗂️ Organize questions by topic using folders
@@ -184,6 +207,39 @@ If you want your heading file to be dynamic, you can use Jinja2 in your heading 
 
 ```sh
 ./generate_pdf.sh -d test_output -h test_files/head.jinja2 -c test_files/style.css
+```
+
+---
+
+## 👨‍💻 Developers
+
+### 🔄 Updating Version
+
+The project includes a script to update the version across all relevant files:
+
+```sh
+./update_version.sh <new_version>
+```
+
+For example:
+```sh
+./update_version.sh 1.2.0
+```
+
+### 🧪 Running Tests
+
+To run the test suite:
+
+```sh
+conda activate markdown-question-bank
+pytest
+```
+
+Or to run a specific test file:
+
+```sh
+conda activate markdown-question-bank
+pytest tests/test_question.py -s
 ```
 
 ---
