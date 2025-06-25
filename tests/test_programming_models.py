@@ -6,10 +6,13 @@ def test_programming_models_from_json():
     model1 = models[0]
     model2 = models[1]
     assert isinstance(model1, ProgrammingModel)
+    assert isinstance(model2, ProgrammingModel)
     assert model1.count() == 2
+    assert model2.count() == 2
     q1 = model1.get("1")
     assert isinstance(q1, ProgrammingQuestionInfo)
     assert q1.dir == "lists_1"
     assert q1.score == "5"
     q2 = model2.get("2")
+    assert q2.score == "5"
     assert q2.dir == "strings_2"
