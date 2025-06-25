@@ -239,7 +239,7 @@ Or to run a specific test file:
 
 ```sh
 conda activate markdown-question-bank
-pytest tests/test_question.py -s
+pytest tests/test_parser_bank.py -s
 ```
 
 ---
