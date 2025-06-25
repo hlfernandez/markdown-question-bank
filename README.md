@@ -30,7 +30,7 @@ conda activate markdown-question-bank
 
 ## 🗂️ Questions Format
 
-The bank of questions consists of one or several Markdown files that can be optionally organized in subfolders that act as topics. Within each file, questions are writen in Markdown and separated by `---`. The right answer is marked with an `[X]` at the beginning, righ after the list symbol. Here is a sample question:
+The bank of questions consists of one or several Markdown files that can be optionally organized in subfolders that act as topics. Within each file, questions are written in Markdown and separated by `---`. The right answer is marked with an `[X]` at the beginning, right after the list symbol. Here is a sample question:
 
 ```markdown
 What is the result of `len("Python")`?
@@ -58,7 +58,7 @@ These metadata keys can be used later for excluding questions with the `--exclud
 
 ### 📄 Code Appendices
 
-Several questions may refer to the same piece of code. To avoid repating it across them and having long quizes, code appendices can be created at the end of each Markdown file as follows:
+Several questions may refer to the same piece of code. To avoid repeating it across them and having long quizzes, code appendices can be created at the end of each Markdown file as follows:
 
 ````markdown
 # Appendices
@@ -73,7 +73,7 @@ print(misterio("abc"))
 ```
 ````
 
-And then the appendix is refered in the question as follows:
+And then the appendix is referred in the question as follows:
 ```markdown
 Given the Python code from [this appendix](#code-1), indicate what its behavior and console output would be:
 
