@@ -118,6 +118,14 @@ Considerando la asignación inicial de la variable A en la primera línea, indic
 |-------------|------------|
 | Alta        | 10         |
 
+---
+
+¿Qué hace `\"  texto  \".strip()`?
+
+- [X] Elimina los espacios al principio y al final.
+- Elimina todos los espacios.
+- Convierte a mayúsculas.
+
 # Anexos
 
 ## Código 1

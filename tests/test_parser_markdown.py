@@ -17,7 +17,7 @@ def test_parse_all_folder():
 
     questions = parser.parse(folder_path)
 
-    assert len(questions) == 12, "There must be 12 questions in the folder"
+    assert len(questions) == 13, "There must be 13 questions in the folder"
     for q in questions:
         assert len(q.get_languages()) == 3, "There must be 3 language files in the test_data/all folder"
 
@@ -29,6 +29,7 @@ def test_parse_all_folder():
         assert len(q.get_wrong_answers()) == 2
 
         statement_gl = q.get_statement().get_translation("GL")
+        print(statement_gl)
         if "[este anexo]" in statement_gl:
             appendix = q.get_appendix()
             assert appendix is not None, "Question with appendix reference must have appendix object"
@@ -48,4 +49,7 @@ def test_parse_all_folder():
 
     assert len(questions[0].get_metadata()['ES']) == 0, "Metadata for question 0 must be empty"
     assert len(questions[11].get_metadata()['ES']) == 2, "Metadata for question 11 must contain two languages"
+
+    assert questions[12].get_wrong_answers()[0].get_translation("GL") == "Elimina todos os espazos.", "First wrong answer must match expected text"
+    assert questions[12].get_wrong_answers()[1].get_translation("GL") == "Convirte a maiúsculas.", "Second wrong answer must match expected text"
 

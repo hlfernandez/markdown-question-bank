@@ -118,6 +118,14 @@ Considering the initial assignment of variable A in the first line, indicate the
 |-------------|------------|
 | High        | 10         |
 
+---
+
+What does `"  texto  ".strip()` do?
+
+- [X] Removes spaces at the beginning and the end.
+- Removes all spaces.
+- Converts to uppercase.
+
 # Appendices
 
 ## Code 1

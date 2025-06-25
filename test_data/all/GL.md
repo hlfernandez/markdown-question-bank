@@ -119,6 +119,14 @@ Considerando a asignación inicial da variable A na primeira liña, indica o cas
 |-------------|------------|
 | Alta        | 10         |
 
+---
+
+Que fai `"  texto  ".strip()`?
+
+- [X] Elimina os espazos ao principio e ao final.
+- Elimina todos os espazos.
+- Convirte a maiúsculas.
+
 # Anexos
 
 ## Código 1

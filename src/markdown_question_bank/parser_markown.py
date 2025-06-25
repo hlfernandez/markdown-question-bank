@@ -71,7 +71,7 @@ class MarkdownFolderParser:
             with open(path, encoding="utf-8") as f:
                 content = f.read()
             # Remove appendix section for question parsing
-            content_wo_appendix = re.split(r"^#\s*Anexos", content, maxsplit=1, flags=re.MULTILINE)[0]
+            content_wo_appendix = re.split(r"^#\s*(?:Anexos|Appendices)", content, maxsplit=1, flags=re.MULTILINE)[0]
             # Split only on lines that are exactly --- (with optional whitespace), not on --- inside tables
             raw_questions = [q for q in re.split(r'\n\s*---\s*\n', content_wo_appendix) if q.strip()]
             parsed: List[tuple[str, List[str], List[str], List[List[str]]]] = []
