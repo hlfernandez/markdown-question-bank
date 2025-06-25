@@ -1,29 +1,46 @@
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 class MultilanguageString:
-    def __init__(self, translations: Dict[str, str]):
-        self.translations = translations
+    def __init__(self, translations: Optional[Dict[str, str]] = None):
+        self.translations = translations or {}
 
     def get_languages(self) -> List[str]:
         return list(self.translations.keys())
 
     def get_translation(self, language: str) -> str:
-        return self.translations[language]
+        return self.translations.get(language, "")
+
+    def add_translation(self, language: str, text: str):
+        self.translations[language] = text
 
     def __str__(self) -> str:
         return self.translations.__str__()
 
+    def __eq__(self, other):
+        if not isinstance(other, MultilanguageString):
+            return False
+        return self.translations == other.translations
+    
+    def __hash__(self):
+        return hash(tuple(sorted(self.translations.items())))
+
 class Appendix:
-    def __init__(self, title: str, url: str, content: MultilanguageString):
-        self.title = title
-        self.url = url
-        self.content = content
+    def __init__(self, title: Optional[MultilanguageString] = None, url: Optional[MultilanguageString] = None, content: Optional[MultilanguageString] = None):
+        self.title = title if title is not None else MultilanguageString()
+        self.url = url if url is not None else MultilanguageString()
+        self.content = content if content is not None else MultilanguageString()
 
-    def get_title(self) -> str:
-        return self.title
+    def get_title(self, language: Optional[str] = None) -> str:
+        if language is None:
+            lang = self.title.get_languages()[0] if self.title.get_languages() else ""
+            return self.title.get_translation(lang)
+        return self.title.get_translation(language)
 
-    def get_url(self) -> str:
-        return self.url
+    def get_url(self, language: Optional[str] = None) -> str:
+        if language is None:
+            lang = self.url.get_languages()[0] if self.url.get_languages() else ""
+            return self.url.get_translation(lang)
+        return self.url.get_translation(language)
 
     def get_content(self) -> MultilanguageString:
         return self.content
@@ -31,10 +48,10 @@ class Appendix:
     def __eq__(self, other):
         if not isinstance(other, Appendix):
             return False
-        return (self.title, self.url, str(self.content)) == (other.title, other.url, str(other.content))
+        return (self.title, self.url, self.content) == (other.title, other.url, other.content)
 
     def __hash__(self):
-        return hash((self.title, self.url, str(self.content)))
+        return hash((str(self.title), str(self.url), str(self.content)))
     
     def __str__(self) -> str:
         return f"Appendix(title={self.title}, url={self.url})"

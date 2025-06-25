@@ -5,8 +5,8 @@ from markdown_question_bank.quiz_model import QuizModel
 from markdown_question_bank.question import Appendix
 
 TRANSLATIONS = {
-    "Appendix": {
-        "EN": "Appendix",
+    "Appendices": {
+        "EN": "Appendices",
         "ES": "Anexos",
         "GL": "Anexos"
     },
@@ -64,10 +64,10 @@ class MarkdownQuizModel:
     def _render_appendices(self, appendices, language: str) -> list[str]:
         if not appendices:
             return []
-        appendix_title = get_translation_keyword("Appendix", language)
+        appendix_title = get_translation_keyword("Appendices", language)
         lines = [f"# {appendix_title}", ""]
         for appendix in appendices:
-            title = appendix.get_title()
+            title = appendix.get_title(language)
             content = appendix.get_content().get_translation(language)
             lines.append(f"## {title}")
             lines.append("")
@@ -92,8 +92,8 @@ class MarkdownQuizModel:
             def repl(m):
                 # m.group(1) is the link text, m.group(2) is the anchor
                 for app in appendices:
-                    if app.get_url() == m.group(2):
-                        return f"{m.group(1)} ({app.get_title()})"
+                    if app.get_url(language) == m.group(2):
+                        return f"{m.group(1)} ({app.get_title(language)})"
                 return m.group(1)
             statement = re.sub(r'\[(.*?)\]\((#.*?)\)', repl, statement)
             lines.append(f"**{i}**. {statement}")

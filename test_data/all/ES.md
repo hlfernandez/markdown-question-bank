@@ -6,7 +6,7 @@
 
 ---
 
-Dado el código Python de [este anexo](#code-1), indica cuáles serían su comportamento y salida por consola:
+Dado el código Python de [este anexo](#código-1), indica cuáles serían su comportamento y salida por consola:
 
 - [X] La función invierte la cadena de caracteres.
   La salida sería: `cba`.
@@ -120,7 +120,7 @@ Considerando la asignación inicial de la variable A en la primera línea, indic
 
 # Anexos
 
-## Code 1
+## Código 1
 
 ```python
 def misterio(x):

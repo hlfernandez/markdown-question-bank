@@ -6,7 +6,7 @@ Cal destas opcións describe mellor o propósito da función `range(3)` en Pytho
 
 ---
 
-Dado o código Python de [este anexo](#code-1), indica cales serían o seu comportamento e saída por consola:
+Dado o código Python de [este anexo](#código-1), indica cales serían o seu comportamento e saída por consola:
 
 - [X] A función inverte a cadea de caracteres.
   A saída sería: `cba`.
@@ -121,7 +121,7 @@ Considerando a asignación inicial da variable A na primeira liña, indica o cas
 
 # Anexos
 
-## Code 1
+## Código 1
 
 ```python
 def misterio(x):

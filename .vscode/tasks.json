@@ -32,7 +32,7 @@
         {
             "label": "Generate Quiz 1",
             "type": "shell",
-            "command": "source ~/miniconda3/bin/activate markdown-question-bank && export PYTHONPATH=src && python generate_quiz.py --folder-path test_data/all --outdir test_output --num-models 2 --num-questions 12 --num-alternatives 3 --shuffle-answers --num-cols 3 --lang GL --seed 1234",
+            "command": "source ~/miniconda3/bin/activate markdown-question-bank && export PYTHONPATH=src && python generate_quiz.py --folder-path test_data/all --outdir test_output --num-models 2 --num-questions 12 --num-alternatives 3 --shuffle-answers --num-cols 3 --seed 1234",
             "dependsOn": "Clean Output"
         },  
         {
