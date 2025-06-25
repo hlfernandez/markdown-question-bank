@@ -126,6 +126,10 @@ Considerando la asignación inicial de la variable A en la primera línea, indic
 - Elimina todos los espacios.
 - Convierte a mayúsculas.
 
+| Dificultad  | TeachScore |
+|-------------|------------|
+| Baja        | 2          |
+
 # Anexos
 
 ## Código 1

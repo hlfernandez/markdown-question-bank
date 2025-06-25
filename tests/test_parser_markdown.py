@@ -29,7 +29,6 @@ def test_parse_all_folder():
         assert len(q.get_wrong_answers()) == 2
 
         statement_gl = q.get_statement().get_translation("GL")
-        print(statement_gl)
         if "[este anexo]" in statement_gl:
             appendix = q.get_appendix()
             assert appendix is not None, "Question with appendix reference must have appendix object"
