@@ -1,4 +1,4 @@
-from typing import List, Set, Optional
+from typing import List, Optional
 from pfylter.core import AbstractFilter, AllFilters, AnyFilter, NotFilter
 from markdown_question_bank.bank import Bank
 from markdown_question_bank.question import Question
@@ -22,9 +22,9 @@ class MetadataQuestionFilter(AbstractFilter[Question]):
         return False
 
     @staticmethod
-    def from_cli_args(cli_arg: str) -> 'QuickTestQuestionFilter':
+    def from_cli_args(cli_arg: str) -> 'MetadataQuestionFilter':
         """
-        Create a QuickTestQuestionFilter from a CLI argument string.
+        Create a MetadataQuestionFilter from a CLI argument string.
         The expected format is "language:metadata_key:metadata_value".
         """
         parts = cli_arg.split(':')
@@ -44,13 +44,13 @@ class FilteredBank:
     def get_questions(self) -> List[Question]:
         return self._filtered_bank.get_questions()
 
-    def get_topics(self) -> Set[str]:
+    def get_topics(self) -> List[str]:
         return self._filtered_bank.get_topics()
 
     def get_questions_by_topic(self, topic: str) -> List[Question]:
         return self._filtered_bank.get_questions_by_topic(topic)
 
-    def filter_topics(self, topics: Optional[Set[str]] = None) -> 'Bank':
+    def filter_topics(self, topics: Optional[List[str]] = None) -> 'Bank':
         return self._filtered_bank.filter_topics(topics)
     
     def get_languages(self) -> List[str]:
