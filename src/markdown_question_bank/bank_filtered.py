@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 from pfylter.core import AbstractFilter, AllFilters, AnyFilter, NotFilter
 from markdown_question_bank.bank import Bank
 from markdown_question_bank.question import Question
@@ -50,8 +50,8 @@ class FilteredBank:
     def get_questions_by_topic(self, topic: str) -> List[Question]:
         return self._filtered_bank.get_questions_by_topic(topic)
 
-    def filter_topics(self, topics: Optional[List[str]] = None) -> 'Bank':
-        return self._filtered_bank.filter_topics(topics)
+    def filter_topics(self, excluded_topics: List[str]) -> 'Bank':
+        return self._filtered_bank.filter_topics(excluded_topics)
     
     def get_languages(self) -> List[str]:
         return self._filtered_bank.get_languages()
