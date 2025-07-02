@@ -53,6 +53,7 @@ class TopicQuestionSampler(QuestionSampler):
     @staticmethod
     def from_bank(bank: Bank, total: int, seed: int | None = None) -> 'TopicQuestionSampler':
         topics = bank.get_topics()
+
         if not topics:
             raise ValueError("No topics found in the bank.")
 

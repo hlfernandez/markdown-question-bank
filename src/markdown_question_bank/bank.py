@@ -34,7 +34,10 @@ class Bank:
         for q in self.questions:
             topics.update(q.get_topics())
 
-        return list(topics)
+        toret = list(topics)
+        toret = sorted(toret)
+
+        return toret
 
     def get_questions_by_topic(self, topic: str) -> List[Question]:
         return [q for q in self.questions if topic in q.get_topics()]
