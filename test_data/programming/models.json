@@ -11,6 +11,12 @@
                 { "dir": "lists_2", "score": "5" },
                 { "dir": "strings_2", "score": "5"}
             ]
+        },
+        {
+            "problems": [
+                { "dir": "lists/1", "score": "5" },
+                { "dir": "lists/2", "score": "5"}
+            ]
         }
     ]
 }

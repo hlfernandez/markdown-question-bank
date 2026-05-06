@@ -2,13 +2,18 @@ from markdown_question_bank.programming_models import ProgrammingModels, Program
 
 def test_programming_models_from_json():
     models = ProgrammingModels.from_json('test_data/programming/models.json')
-    assert len(models) == 2
+    assert len(models) == 3
+    
     model1 = models[0]
     model2 = models[1]
+    model3 = models[2]
     assert isinstance(model1, ProgrammingModel)
     assert isinstance(model2, ProgrammingModel)
+    assert isinstance(model3, ProgrammingModel)
     assert model1.count() == 2
     assert model2.count() == 2
+    assert model3.count() == 2
+    
     q1 = model1.get("1")
     assert isinstance(q1, ProgrammingQuestionInfo)
     assert q1.dir == "lists_1"

@@ -6,26 +6,42 @@ class ProgrammingBankParser:
     def __init__(self, folder_path: str):
         self.folder_path = folder_path
 
+    def _parse_problem_dir(self, dir_path: str, title: str) -> ProblemStatement | None:
+        translations = {}
+        for filename in os.listdir(dir_path):
+            if filename.endswith('.md'):
+                lang = filename.split('.')[0]
+                md_path = os.path.join(dir_path, filename)
+                with open(md_path, encoding="utf-8") as f:
+                    lines = f.readlines()
+                    content = "".join([line for line in lines if not line.strip().startswith("<!--")]).strip()
+                    translations[lang] = content
+        if translations:
+            return ProblemStatement(MultilanguageString(translations), title=title)
+        return None
+
     def parse(self) -> ProgrammingBank:
         bank = ProgrammingBank()
-        for subfolder in os.listdir(self.folder_path):
-            subfolder_path = os.path.join(self.folder_path, subfolder)
-            if not os.path.isdir(subfolder_path):
+        for entry in os.listdir(self.folder_path):
+            entry_path = os.path.join(self.folder_path, entry)
+            if not os.path.isdir(entry_path):
                 continue
-            translations = {}
 
-            for filename in os.listdir(subfolder_path):
-                if filename.endswith('.md'):
-                    lang = filename.split('.')[0]
-                    md_path = os.path.join(subfolder_path, filename)
-                    with open(md_path, encoding="utf-8") as f:
-                        lines = f.readlines()
-                        content = "".join([line for line in lines if not line.strip().startswith("<!--")]).strip()
-                        translations[lang] = content
-            if translations:
-                statement = MultilanguageString(translations)
-                problem = ProblemStatement(statement, title=subfolder)
-                bank.add_problem(problem)
+            # Check if this directory contains .md files directly
+            has_md_files = any(f.endswith('.md') for f in os.listdir(entry_path))
+            if has_md_files:
+                problem = self._parse_problem_dir(entry_path, title=entry)
+                if problem:
+                    bank.add_problem(problem)
+            else:
+                # Recurse one level deeper, using "parent/child" as the title
+                for subentry in os.listdir(entry_path):
+                    subentry_path = os.path.join(entry_path, subentry)
+                    if not os.path.isdir(subentry_path):
+                        continue
+                    problem = self._parse_problem_dir(subentry_path, title=f"{entry}/{subentry}")
+                    if problem:
+                        bank.add_problem(problem)
         return bank
 
 if __name__ == "__main__":

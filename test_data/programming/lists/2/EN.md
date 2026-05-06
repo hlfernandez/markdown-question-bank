@@ -1,0 +1,1 @@
+Write a function `remove_duplicates` that takes a list and returns a new list with duplicates removed, keeping the original order.
